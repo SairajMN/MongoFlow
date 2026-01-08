@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MongoFlow Studio - MongoDB Visual Playground</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <header>
+        <h1>🧠 MongoFlow Studio</h1>
+        <p>MongoDB Visualization Platform - Learn MongoDB with Real-time Flow Visualization</p>
+        <div class="header-help">
+            <small>🚀 New to MongoDB? Start with the <strong>Learn MongoDB</strong> tab → explore concepts → practice in
+                the Playground!</small>
+        </div>
+    </header>
+
+    <nav>
+        <button class="tab-button active" data-tab="tutorial">📚 Learn MongoDB</button>
+        <button class="tab-button" data-tab="playground">MongoDB Playground</button>
+        <button class="tab-button" data-tab="visualizer">Data Flow Visualizer</button>
+    </nav>
+
+    <main>
+        <!-- Tutorial Tab -->
+        <section id="tutorial" class="tab-content">
+            <div class="tutorial-header">
+                <h2>🚀 Welcome to MongoDB Learning Journey!</h2>
+                <p>Master MongoDB concepts through interactive examples and hands-on practice.</p>
+            </div>
+
+            <div class="tutorial-grid">
+                <div class="tutorial-card" data-concept="basics">
+                    <h3>📖 MongoDB Basics</h3>
+                    <p>Documents, Collections, Databases - the foundation of MongoDB</p>
+                    <button class="learn-btn" onclick="showTutorial('basics')">Start Learning</button>
+                </div>
+
+                <div class="tutorial-card" data-concept="crud">
+                    <h3>🔧 CRUD Operations</h3>
+                    <p>Create, Read, Update, Delete - core database operations</p>
+                    <button class="learn-btn" onclick="showTutorial('crud')">Learn CRUD</button>
+                </div>
+
+                <div class="tutorial-card" data-concept="queries">
+                    <h3>🔍 Querying Data</h3>
+                    <p>Find documents with filters, operators, and advanced queries</p>
+                    <button class="learn-btn" onclick="showTutorial('queries')">Explore Queries</button>
+                </div>
+
+                <div class="tutorial-card" data-concept="aggregation">
+                    <h3>📊 Aggregation Framework</h3>
+                    <p>Transform and analyze data with powerful pipeline operations</p>
+                    <button class="learn-btn" onclick="showTutorial('aggregation')">Master Aggregation</button>
+                </div>
+
+                <div class="tutorial-card" data-concept="indexing">
+                    <h3>⚡ Performance & Indexing</h3>
+                    <p>Optimize queries with indexes and understand performance</p>
+                    <button class="learn-btn" onclick="showTutorial('indexing')">Learn Indexing</button>
+                </div>
+
+                <div class="tutorial-card" data-concept="advanced">
+                    <h3>🔬 Advanced Features</h3>
+                    <p>Text search, change streams, schema validation, and more</p>
+                    <button class="learn-btn" onclick="showTutorial('advanced')">Advanced Topics</button>
+                </div>
+            </div>
+
+            <div id="tutorial-content" class="tutorial-content">
+                <div class="tutorial-welcome">
+                    <h3>👋 Choose a topic above to start learning!</h3>
+                    <p>Each tutorial includes:</p>
+                    <ul>
+                        <li>📚 Concept explanations</li>
+                        <li>💡 Interactive examples</li>
+                        <li>🎯 Hands-on practice</li>
+                        <li>🔍 Real-time visualization</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- MongoDB Playground Tab -->
+        <section id="playground" class="tab-content active">
+            <div class="operation-selector">
+                <select id="operation">
+                    <option value="insert">Insert Document</option>
+                    <option value="bulk-insert">Bulk Insert</option>
+                    <option value="find">Find Documents</option>
+                    <option value="find-advanced">Advanced Find (with options)</option>
+                    <option value="update">Update Documents</option>
+                    <option value="delete">Delete Documents</option>
+                    <option value="aggregate">Aggregation Pipeline</option>
+                    <option value="text-search">Text Search</option>
+                    <option value="create-index">Create Index</option>
+                    <option value="list-indexes">List Indexes</option>
+                    <option value="drop-index">Drop Index</option>
+                </select>
+                <select id="sampleData">
+                    <option value="">Load Sample Data...</option>
+                    <option value="users">Users Dataset</option>
+                    <option value="products">Products Dataset</option>
+                    <option value="orders">Orders Dataset</option>
+                    <option value="logs">System Logs</option>
+                </select>
+                <button id="loadSampleBtn">Load</button>
+            </div>
+
+            <div class="operation-status">
+                <div id="statusIndicator">
+                    <span id="statusText">Ready to execute operations</span>
+                    <div id="statusProgress" class="progress-bar">
+                        <div id="progressFill" class="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-panel">
+                <h3>Input JSON</h3>
+                <textarea id="jsonInput" placeholder="Enter JSON here..."></textarea>
+                <button id="executeBtn">Execute Operation</button>
+            </div>
+
+            <div class="result-panel">
+                <h3>Results</h3>
+                <pre id="resultOutput"></pre>
+            </div>
+
+            <div class="metrics-panel">
+                <h3>Metrics</h3>
+                <div id="metrics"></div>
+            </div>
+        </section>
+
+        <!-- Data Flow Visualizer Tab -->
+        <section id="visualizer" class="tab-content">
+            <div class="flow-canvas">
+                <canvas id="flowCanvas"></canvas>
+            </div>
+            <div class="flow-info">
+                <h3>Current Flow Step</h3>
+                <div id="flowStep"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Monaco Editor -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
