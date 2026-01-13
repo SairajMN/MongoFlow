@@ -1,0 +1,20 @@
+{
+  "name": "mongoflow-studio",
+  "version": "1.0.0",
+  "description": "MongoDB visualization platform with Vanilla JS and Vercel serverless",
+  "main": "api/index.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'No build step required'",
+    "start": "vercel dev"
+  },
+  "dependencies": {
+    "mongodb": "^6.0.0"
+  },
+  "devDependencies": {
+    "vercel": "^32.0.0"
+  },
+  "keywords": ["mongodb", "visualization", "vanilla-js", "vercel"],
+  "author": "MongoFlow Team",
+  "license": "MIT"
+}
