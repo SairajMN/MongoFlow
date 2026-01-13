@@ -185,7 +185,37 @@ class MongoFlowStudio {
   }
 }`,
             'list-indexes': `{}`,
-            'drop-index': `"age_index"`
+            'drop-index': `"age_index"`,
+            'validate-schema': `{
+  "document": {
+    "name": "John Doe",
+    "email": "john@example.com",
+    "age": 30
+  },
+  "schema": {
+    "type": "object",
+    "properties": {
+      "name": { "type": "string" },
+      "email": { "type": "string" },
+      "age": { "type": "number", "minimum": 0 }
+    },
+    "required": ["name", "email"]
+  }
+}`,
+            'change-stream': `{
+  "collection": "demo_collection",
+  "filter": {
+    "operationType": "insert"
+  }
+}`,
+            'query-cost': `{
+  "query": {
+    "age": { "$gte": 25 }
+  },
+  "operation": "find"
+}`,
+            'wiredtiger-metrics': `{}`,
+            'schema-insights': `{}`
         };
 
         if (this.monacoEditor) {
@@ -303,6 +333,31 @@ class MongoFlowStudio {
                     return '❌ Drop index expects a string index name.\n\nExample: "age_index"';
                 }
                 break;
+
+            case 'validate-schema':
+                if (typeof data !== 'object' || !data.document || !data.schema) {
+                    return '❌ Schema validation expects an object with "document" and "schema" fields.\n\nExample: {"document": {"name": "John"}, "schema": {"type": "object", "required": ["name"]}}';
+                }
+                break;
+
+            case 'change-stream':
+                if (typeof data !== 'object') {
+                    return '❌ Change stream expects an object with optional "collection" and "filter" fields.\n\nExample: {"collection": "demo_collection", "filter": {"operationType": "insert"}}';
+                }
+                break;
+
+            case 'query-cost':
+                if (typeof data !== 'object' || !data.query) {
+                    return '❌ Query cost analysis expects an object with "query" and optional "operation" fields.\n\nExample: {"query": {"age": {"$gte": 25}}, "operation": "find"}';
+                }
+                break;
+
+            case 'wiredtiger-metrics':
+            case 'schema-insights':
+                if (typeof data !== 'object') {
+                    return `❌ ${operation.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())} expects an empty object or specific parameters.\n\nExample: {}`;
+                }
+                break;
         }
         return null; // No validation errors
     }
@@ -319,7 +374,12 @@ class MongoFlowStudio {
             'text-search': '/api/text-search',
             'create-index': '/api/create-index',
             'list-indexes': '/api/list-indexes',
-            'drop-index': '/api/drop-index'
+            'drop-index': '/api/drop-index',
+            'validate-schema': '/api/validate-schema',
+            'change-stream': '/api/change-stream',
+            'query-cost': '/api/query-cost',
+            'wiredtiger-metrics': '/api/wiredtiger-metrics',
+            'schema-insights': '/api/schema-insights'
         };
 
         const response = await fetch(endpoints[operation], {
@@ -566,11 +626,13 @@ class MongoFlowStudio {
 
         const sampleDatasets = {
             users: [
-                { name: "Alice Johnson", email: "alice@example.com", age: 28, department: "Engineering", skills: ["JavaScript", "React"] },
-                { name: "Bob Smith", email: "bob@example.com", age: 32, department: "Marketing", skills: ["SEO", "Content"] },
-                { name: "Charlie Brown", email: "charlie@example.com", age: 25, department: "Engineering", skills: ["Python", "Django"] },
-                { name: "Diana Prince", email: "diana@example.com", age: 30, department: "HR", skills: ["Recruiting", "Training"] },
-                { name: "Eve Wilson", email: "eve@example.com", age: 27, department: "Engineering", skills: ["Java", "Spring"] }
+                { name: "Alice Johnson", email: "alice@example.com", age: 28, department: "Engineering", skills: ["JavaScript", "React"], salary: 75000, hireDate: new Date("2020-03-15") },
+                { name: "Bob Smith", email: "bob@example.com", age: 32, department: "Marketing", skills: ["SEO", "Content"], salary: 65000, hireDate: new Date("2019-08-20") },
+                { name: "Charlie Brown", email: "charlie@example.com", age: 25, department: "Engineering", skills: ["Python", "Django"], salary: 70000, hireDate: new Date("2021-01-10") },
+                { name: "Diana Prince", email: "diana@example.com", age: 30, department: "HR", skills: ["Recruiting", "Training"], salary: 60000, hireDate: new Date("2018-11-05") },
+                { name: "Eve Wilson", email: "eve@example.com", age: 27, department: "Engineering", skills: ["Java", "Spring"], salary: 72000, hireDate: new Date("2020-07-22") },
+                { name: "Frank Miller", email: "frank@example.com", age: 35, department: "Sales", skills: ["Negotiation", "CRM"], salary: 55000, hireDate: new Date("2017-05-30") },
+                { name: "Grace Lee", email: "grace@example.com", age: 29, department: "Engineering", skills: ["Node.js", "MongoDB"], salary: 78000, hireDate: new Date("2019-12-01") }
             ],
             products: [
                 { name: "Laptop Pro", price: 1299.99, category: "Electronics", stock: 50, rating: 4.5 },
@@ -994,100 +1056,81 @@ db.users.dropIndexes()</code></pre>
                 title: "Advanced Features",
                 content: `
                     <h3>🔬 Advanced MongoDB Features</h3>
+                    <p>Explore powerful MongoDB capabilities available in the Playground!</p>
 
                     <h4>📝 Schema Validation</h4>
-                    <p>Enforce document structure and data types:</p>
+                    <p>Enforce document structure and data types to maintain data quality:</p>
                     <div class="operation-examples">
-                        <pre><code>db.createCollection("users", {
-  "validator": {
-    "$jsonSchema": {
-      "bsonType": "object",
-      "required": ["name", "email"],
-      "properties": {
-        "name": { "bsonType": "string" },
-        "email": { "bsonType": "string" },
-        "age": {
-          "bsonType": "int",
-          "minimum": 0,
-          "maximum": 120
-        }
-      }
+                        <pre><code>// Try in Playground: Select "Schema Validation"
+{
+  "document": {
+    "name": "John Doe",
+    "email": "john@example.com",
+    "age": 30
+  },
+  "schema": {
+    "type": "object",
+    "required": ["name", "email"],
+    "properties": {
+      "name": { "type": "string" },
+      "email": { "type": "string" },
+      "age": { "type": "number", "minimum": 0 }
     }
   }
-})</code></pre>
-                    </div>
-
-                    <h4>🔄 Change Streams</h4>
-                    <p>Monitor real-time database changes:</p>
-                    <div class="operation-examples">
-                        <pre><code>// Watch for changes
-const changeStream = db.users.watch();
-
-changeStream.on('change', (change) => {
-  console.log('Change detected:', change);
-  // Process the change event
-});
-
-// Watch with filter
-const filteredStream = db.users.watch([
-  { "$match": { "operationType": "insert" } },
-  { "$match": { "fullDocument.age": { "$gte": 18 } } }
-]);</code></pre>
-                    </div>
-
-                    <h4>📊 Transactions</h4>
-                    <p>Ensure data consistency across multiple operations:</p>
-                    <div class="operation-examples">
-                        <pre><code>// Multi-document transaction
-const session = db.getMongo().startSession();
-
-session.startTransaction();
-try {
-  // Transfer money between accounts
-  db.accounts.updateOne(
-    { "_id": "account1" },
-    { "$inc": { "balance": -100 } },
-    { session }
-  );
-
-  db.accounts.updateOne(
-    { "_id": "account2" },
-    { "$inc": { "balance": 100 } },
-    { session }
-  );
-
-  session.commitTransaction();
-} catch (error) {
-  session.abortTransaction();
-  throw error;
-} finally {
-  session.endSession();
 }</code></pre>
                     </div>
 
-                    <h4>🗂️ GridFS</h4>
-                    <p>Store large files (like images, videos) in MongoDB:</p>
+                    <h4>🔄 Change Streams</h4>
+                    <p>Monitor real-time database changes (perfect for reactive applications):</p>
                     <div class="operation-examples">
-                        <pre><code>// Store a file
-const bucket = new GridFSBucket(db);
-const uploadStream = bucket.openUploadStream('large-video.mp4');
-const fsStream = fs.createReadStream('./video.mp4');
-fsStream.pipe(uploadStream);
+                        <pre><code>// Try in Playground: Select "Change Streams"
+{
+  "collection": "demo_collection",
+  "filter": {
+    "operationType": "insert"
+  }
+}</code></pre>
+                    </div>
 
-// Retrieve a file
-const downloadStream = bucket.openDownloadStreamByName('large-video.mp4');
-downloadStream.pipe(fs.createWriteStream('./downloaded-video.mp4'));</code></pre>
+                    <h4>⚡ Query Cost Analysis</h4>
+                    <p>Analyze query performance and execution plans:</p>
+                    <div class="operation-examples">
+                        <pre><code>// Try in Playground: Select "Query Cost Analysis"
+{
+  "query": {
+    "age": { "$gte": 25 }
+  },
+  "operation": "find"
+}</code></pre>
+                    </div>
+
+                    <h4>📊 WiredTiger Metrics</h4>
+                    <p>Monitor MongoDB's storage engine performance:</p>
+                    <div class="operation-examples">
+                        <pre><code>// Try in Playground: Select "WiredTiger Metrics"
+{}</code></pre>
+                    </div>
+
+                    <h4>🔍 Schema Insights</h4>
+                    <p>Automatically analyze your data schema patterns:</p>
+                    <div class="operation-examples">
+                        <pre><code>// Try in Playground: Select "Schema Insights"
+{}</code></pre>
                     </div>
 
                     <div class="operation-help">
-                        <h4>🚀 Production Considerations:</h4>
+                        <h4>🎯 What You'll Learn:</h4>
                         <ul>
-                            <li>Use schema validation to maintain data quality</li>
-                            <li>Implement change streams for reactive applications</li>
-                            <li>Use transactions for critical operations requiring consistency</li>
-                            <li>Consider GridFS for files larger than 16MB</li>
-                            <li>Monitor performance with the database profiler</li>
+                            <li><strong>Schema Validation</strong> - Ensure data quality and consistency</li>
+                            <li><strong>Change Streams</strong> - Build reactive, real-time applications</li>
+                            <li><strong>Performance Analysis</strong> - Optimize queries and understand execution</li>
+                            <li><strong>Storage Engine Metrics</strong> - Monitor database performance</li>
+                            <li><strong>Schema Analysis</strong> - Understand your data structure automatically</li>
                         </ul>
+
+                        <div class="tutorial-note" style="background: #e3f2fd; padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                            <strong>💡 Beginner Tip:</strong> Start with Schema Validation - it's like defining rules for your data, ensuring only valid information gets stored!
+                        </div>
                     </div>
                 `,
                 nextAction: () => this.switchTab('playground')
@@ -1160,7 +1203,7 @@ downloadStream.pipe(fs.createWriteStream('./downloaded-video.mp4'));</code></pre
             queries: "Advanced querying enabled! Use the 'Find (with options)' to explore query operators like $gt, $in, etc.",
             aggregation: "Aggregation pipeline ready! Sample product data loaded. Try grouping by category to see totals.",
             indexing: "Indexing demo ready! Sample users loaded. Try creating an index on the 'age' field first.",
-            advanced: "Advanced features ready! Sample logs loaded. Explore text search or other advanced operations."
+            advanced: "Advanced features unlocked! Try Schema Validation first - it's like defining rules for your data quality!"
         };
 
         if (messages[concept]) {

@@ -99,6 +99,13 @@
                     <option value="create-index">Create Index</option>
                     <option value="list-indexes">List Indexes</option>
                     <option value="drop-index">Drop Index</option>
+                    <optgroup label="🔬 Advanced Features">
+                        <option value="validate-schema">Schema Validation</option>
+                        <option value="change-stream">Change Streams</option>
+                        <option value="query-cost">Query Cost Analysis</option>
+                        <option value="wiredtiger-metrics">WiredTiger Metrics</option>
+                        <option value="schema-insights">Schema Insights</option>
+                    </optgroup>
                 </select>
                 <select id="sampleData">
                     <option value="">Load Sample Data...</option>
@@ -121,6 +128,10 @@
 
             <div class="input-panel">
                 <h3>Input JSON</h3>
+                <div class="input-help">
+                    <small>💡 <strong>New to MongoDB?</strong> Select an operation above and the input will be
+                        pre-filled with examples. Start with "Insert Document" or "Find Documents"!</small>
+                </div>
                 <textarea id="jsonInput" placeholder="Enter JSON here..."></textarea>
                 <button id="executeBtn">Execute Operation</button>
             </div>
