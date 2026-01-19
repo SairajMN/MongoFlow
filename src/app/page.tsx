@@ -56,6 +56,7 @@ import {
   History,
   TrendingUp,
   ShieldCheck,
+  Lock,
 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 
@@ -99,7 +100,7 @@ type Lesson = {
   title: string;
   category: "beginner" | "intermediate" | "advanced";
   objective: string;
-  explanation: string;
+  explanation: string | React.ReactNode;
   operation: Operation;
   sampleData: unknown;
   expectedResult: string;
@@ -132,12 +133,222 @@ type AnalysisResult = {
 
 const LESSONS: Lesson[] = [
   {
-    id: "insert-basics",
-    title: "Your First Insert",
+    id: "mongodb-basics",
+    title: "MongoDB Basics",
     category: "beginner",
-    objective: "Learn how to insert a single document into MongoDB",
-    explanation:
-      "The insertOne() operation adds a single document to a collection. MongoDB automatically creates a unique _id field if you don't provide one. Documents are stored as BSON (Binary JSON), which supports additional data types like Date and ObjectId.",
+    objective: "Understand the fundamental concepts of MongoDB",
+    explanation: (
+      <div className="tutorial-content space-y-6">
+        <div>
+          <h3 className="text-xl font-semibold text-emerald-400 mb-3 flex items-center gap-2">
+            🎯 What is MongoDB?
+          </h3>
+          <p className="text-slate-300 leading-relaxed">
+            MongoDB is a{" "}
+            <strong className="text-emerald-300">
+              document-oriented NoSQL database
+            </strong>{" "}
+            that stores data in flexible, JSON-like documents. Unlike
+            traditional relational databases, MongoDB doesn't require a fixed
+            schema.
+          </p>
+        </div>
+
+        <div>
+          <h3 className="text-xl font-semibold text-emerald-400 mb-3 flex items-center gap-2">
+            📄 Documents
+          </h3>
+          <p className="text-slate-300 leading-relaxed mb-4">
+            Documents are the basic unit of data in MongoDB. They're similar to
+            JSON objects:
+          </p>
+          <div className="rounded-lg border border-emerald-500/20 bg-[#0d1117] p-4 overflow-x-auto">
+            <pre className="text-sm text-emerald-300 font-mono">
+              <code>{`{
+  "_id": ObjectId("507f1f77bcf86cd799439011"),
+  "name": "John Doe",
+  "email": "john@example.com",
+  "age": 30,
+  "skills": ["JavaScript", "React", "Node.js"]
+}`}</code>
+            </pre>
+          </div>
+        </div>
+
+        <div>
+          <h3 className="text-xl font-semibold text-emerald-400 mb-3 flex items-center gap-2">
+            📁 Collections
+          </h3>
+          <p className="text-slate-300 leading-relaxed">
+            Collections are groups of documents, similar to tables in relational
+            databases. Documents in the same collection don't need to have the
+            same fields.
+          </p>
+        </div>
+
+        <div>
+          <h3 className="text-xl font-semibold text-emerald-400 mb-3 flex items-center gap-2">
+            🏗️ Databases
+          </h3>
+          <p className="text-slate-300 leading-relaxed">
+            Databases contain collections. A MongoDB server can host multiple
+            databases.
+          </p>
+        </div>
+
+        <div className="rounded-lg border border-amber-500/20 bg-amber-500/5 p-4">
+          <h4 className="text-lg font-medium text-amber-400 mb-3 flex items-center gap-2">
+            💡 Key Concepts to Remember:
+          </h4>
+          <ul className="space-y-2 text-slate-300">
+            <li className="flex items-start gap-2">
+              <span className="text-teal-400 mt-1">•</span>
+              <span>
+                <strong className="text-emerald-300">Documents</strong> =
+                JSON-like objects with fields and values
+              </span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-teal-400 mt-1">•</span>
+              <span>
+                <strong className="text-emerald-300">Collections</strong> =
+                Groups of related documents
+              </span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-teal-400 mt-1">•</span>
+              <span>
+                <strong className="text-emerald-300">Databases</strong> =
+                Containers for collections
+              </span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-teal-400 mt-1">•</span>
+              <span>
+                <strong className="text-emerald-300">Flexible Schema</strong> =
+                Documents can have different fields
+              </span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    ),
+    operation: "insert",
+    sampleData: {
+      name: "John Doe",
+      email: "john@example.com",
+      age: 30,
+      skills: ["JavaScript", "React"],
+    },
+    expectedResult:
+      "Understanding the core concepts of MongoDB document structure",
+    tips: [
+      "Documents are stored as BSON (Binary JSON) internally",
+      "MongoDB automatically creates an _id field for each document",
+      "Collections are created implicitly when you first insert data",
+      "No schema validation by default - flexible but requires careful design",
+    ],
+    nextLesson: "crud-operations",
+  },
+  {
+    id: "crud-operations",
+    title: "CRUD Operations",
+    category: "beginner",
+    objective: "Master the four basic operations: Create, Read, Update, Delete",
+    explanation: (
+      <div className="tutorial-content space-y-6">
+        <div>
+          <h3 className="text-xl font-semibold text-emerald-400 mb-3 flex items-center gap-2">
+            🔧 CRUD Operations
+          </h3>
+          <p className="text-slate-300 leading-relaxed">
+            CRUD stands for Create, Read, Update, Delete - the four basic
+            operations for managing data.
+          </p>
+        </div>
+
+        <div>
+          <h4 className="text-lg font-semibold text-emerald-400 mb-3 flex items-center gap-2">
+            📝 Create (Insert)
+          </h4>
+          <p className="text-slate-300 leading-relaxed mb-4">
+            Add new documents to a collection:
+          </p>
+          <div className="rounded-lg border border-emerald-500/20 bg-[#0d1117] p-4 overflow-x-auto">
+            <pre className="text-sm text-emerald-300 font-mono">
+              <code>{`db.users.insertOne({
+  "name": "Alice Johnson",
+  "email": "alice@example.com",
+  "age": 28
+})`}</code>
+            </pre>
+          </div>
+        </div>
+
+        <div>
+          <h4 className="text-lg font-semibold text-emerald-400 mb-3 flex items-center gap-2">
+            📖 Read (Find)
+          </h4>
+          <p className="text-slate-300 leading-relaxed mb-4">
+            Query documents from a collection:
+          </p>
+          <div className="rounded-lg border border-emerald-500/20 bg-[#0d1117] p-4 overflow-x-auto">
+            <pre className="text-sm text-emerald-300 font-mono">
+              <code>{`// Find all users
+db.users.find({})
+
+// Find users older than 25
+db.users.find({ "age": { "$gt": 25 } })
+
+// Find one user by name
+db.users.findOne({ "name": "Alice Johnson" })`}</code>
+            </pre>
+          </div>
+        </div>
+
+        <div>
+          <h4 className="text-lg font-semibold text-emerald-400 mb-3 flex items-center gap-2">
+            ✏️ Update
+          </h4>
+          <p className="text-slate-300 leading-relaxed mb-4">
+            Modify existing documents:
+          </p>
+          <div className="rounded-lg border border-emerald-500/20 bg-[#0d1117] p-4 overflow-x-auto">
+            <pre className="text-sm text-emerald-300 font-mono">
+              <code>{`// Update a specific field
+db.users.updateOne(
+  { "name": "Alice Johnson" },
+  { "$set": { "age": 29 } }
+)
+
+// Increment a value
+db.users.updateOne(
+  { "name": "Alice Johnson" },
+  { "$inc": { "loginCount": 1 } }
+)`}</code>
+            </pre>
+          </div>
+        </div>
+
+        <div>
+          <h4 className="text-lg font-semibold text-emerald-400 mb-3 flex items-center gap-2">
+            🗑️ Delete
+          </h4>
+          <p className="text-slate-300 leading-relaxed mb-4">
+            Remove documents from a collection:
+          </p>
+          <div className="rounded-lg border border-emerald-500/20 bg-[#0d1117] p-4 overflow-x-auto">
+            <pre className="text-sm text-emerald-300 font-mono">
+              <code>{`// Delete one document
+db.users.deleteOne({ "name": "Alice Johnson" })
+
+// Delete all documents matching criteria
+db.users.deleteMany({ "age": { "$lt": 18 } })`}</code>
+            </pre>
+          </div>
+        </div>
+      </div>
+    ),
     operation: "insert",
     sampleData: {
       name: "Sarah Connor",
@@ -148,11 +359,12 @@ const LESSONS: Lesson[] = [
     expectedResult:
       "A new document will be created with an auto-generated _id. The response shows 'acknowledged: true' and the insertedId.",
     tips: [
-      "MongoDB is schema-flexible - you can add different fields to different documents",
-      "The _id field is automatically indexed for fast lookups",
-      "Use meaningful field names for better queryability",
+      "Always use $set operator for updates to avoid replacing entire documents",
+      "find() returns a cursor, findOne() returns a single document",
+      "Be careful with deleteMany() - it removes all matching documents",
+      "MongoDB operations are atomic at the document level",
     ],
-    nextLesson: "bulk-insert-basics",
+    nextLesson: "query-operators",
   },
   {
     id: "bulk-insert-basics",
@@ -927,6 +1139,29 @@ export default function Home() {
     (l) => l.category === "intermediate",
   );
   const advancedLessons = LESSONS.filter((l) => l.category === "advanced");
+
+  // Progressive learning logic
+  const completedBeginnerLessons = beginnerLessons.filter((lesson) =>
+    completedLessons.has(lesson.id),
+  );
+  const completedIntermediateLessons = intermediateLessons.filter((lesson) =>
+    completedLessons.has(lesson.id),
+  );
+  const completedAdvancedLessons = advancedLessons.filter((lesson) =>
+    completedLessons.has(lesson.id),
+  );
+
+  const hasCompletedAllBeginners =
+    completedBeginnerLessons.length === beginnerLessons.length;
+  const hasCompletedAllIntermediates =
+    hasCompletedAllBeginners &&
+    completedIntermediateLessons.length === intermediateLessons.length;
+  const hasCompletedAllAdvanced =
+    hasCompletedAllIntermediates &&
+    completedAdvancedLessons.length === advancedLessons.length;
+
+  const canAccessIntermediate = hasCompletedAllBeginners;
+  const canAccessAdvanced = hasCompletedAllIntermediates;
 
   const getNodeColor = (type: FlowNode["type"]) => {
     switch (type) {
@@ -2231,63 +2466,120 @@ export default function Home() {
                             lessons: advancedLessons,
                             color: "rose",
                           },
-                        ].map((section, sectionIndex) => (
-                          <motion.div
-                            key={section.title}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: sectionIndex * 0.1 }}
-                          >
-                            <h4
-                              className={`text-xs font-semibold uppercase tracking-wider text-${section.color}-400 mb-2`}
+                        ].map((section, sectionIndex) => {
+                          // Determine if this section is accessible
+                          const isAccessible =
+                            section.title === "Beginner" ||
+                            (section.title === "Intermediate" &&
+                              canAccessIntermediate) ||
+                            (section.title === "Advanced" && canAccessAdvanced);
+
+                          return (
+                            <motion.div
+                              key={section.title}
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ delay: sectionIndex * 0.1 }}
                             >
-                              {section.title}
-                            </h4>
-                            <div className="space-y-1">
-                              {section.lessons.map((lesson, lessonIndex) => (
-                                <motion.button
-                                  key={lesson.id}
-                                  onClick={() => loadLesson(lesson)}
-                                  initial={{ opacity: 0, x: -20 }}
-                                  animate={{ opacity: 1, x: 0 }}
-                                  transition={{
-                                    delay:
-                                      sectionIndex * 0.1 + lessonIndex * 0.05,
-                                  }}
-                                  whileHover={{
-                                    x: 4,
-                                    backgroundColor: "rgba(30, 41, 59, 0.8)",
-                                  }}
-                                  className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-left text-sm transition-all ${
-                                    selectedLesson?.id === lesson.id
-                                      ? `bg-${section.color}-500/20 text-${section.color}-400`
-                                      : "text-slate-400"
+                              <div className="flex items-center gap-2 mb-2">
+                                <h4
+                                  className={`text-xs font-semibold uppercase tracking-wider ${
+                                    isAccessible
+                                      ? `text-${section.color}-400`
+                                      : "text-slate-600"
                                   }`}
                                 >
-                                  <motion.div
-                                    animate={
-                                      completedLessons.has(lesson.id)
-                                        ? { scale: [1, 1.2, 1] }
-                                        : {}
-                                    }
-                                    transition={{ duration: 0.3 }}
-                                  >
-                                    {completedLessons.has(lesson.id) ? (
-                                      <CheckCircle2
-                                        className={`h-4 w-4 text-${section.color}-400 flex-shrink-0`}
-                                      />
-                                    ) : (
-                                      <Circle className="h-4 w-4 text-slate-600 flex-shrink-0" />
-                                    )}
-                                  </motion.div>
-                                  <span className="truncate">
-                                    {lesson.title}
-                                  </span>
-                                </motion.button>
-                              ))}
-                            </div>
-                          </motion.div>
-                        ))}
+                                  {section.title}
+                                </h4>
+                                {!isAccessible && (
+                                  <Lock className="h-3 w-3 text-slate-600" />
+                                )}
+                              </div>
+
+                              {!isAccessible &&
+                                section.title === "Intermediate" && (
+                                  <p className="text-[10px] text-slate-600 mb-2">
+                                    Complete all beginner lessons to unlock
+                                  </p>
+                                )}
+
+                              {!isAccessible &&
+                                section.title === "Advanced" && (
+                                  <p className="text-[10px] text-slate-600 mb-2">
+                                    Complete all intermediate lessons to unlock
+                                  </p>
+                                )}
+
+                              <div className="space-y-1">
+                                {section.lessons.map((lesson, lessonIndex) => {
+                                  const isLessonAccessible = isAccessible;
+                                  const isCompleted = completedLessons.has(
+                                    lesson.id,
+                                  );
+
+                                  return (
+                                    <motion.button
+                                      key={lesson.id}
+                                      onClick={() =>
+                                        isLessonAccessible && loadLesson(lesson)
+                                      }
+                                      initial={{ opacity: 0, x: -20 }}
+                                      animate={{ opacity: 1, x: 0 }}
+                                      transition={{
+                                        delay:
+                                          sectionIndex * 0.1 +
+                                          lessonIndex * 0.05,
+                                      }}
+                                      whileHover={
+                                        isLessonAccessible
+                                          ? {
+                                              x: 4,
+                                              backgroundColor:
+                                                "rgba(30, 41, 59, 0.8)",
+                                            }
+                                          : {}
+                                      }
+                                      disabled={!isLessonAccessible}
+                                      className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-left text-sm transition-all ${
+                                        !isLessonAccessible
+                                          ? "opacity-50 cursor-not-allowed bg-slate-900/50"
+                                          : selectedLesson?.id === lesson.id
+                                            ? `bg-${section.color}-500/20 text-${section.color}-400`
+                                            : isCompleted
+                                              ? `text-${section.color}-300`
+                                              : "text-slate-400"
+                                      }`}
+                                    >
+                                      <motion.div
+                                        animate={
+                                          isCompleted
+                                            ? { scale: [1, 1.2, 1] }
+                                            : {}
+                                        }
+                                        transition={{ duration: 0.3 }}
+                                      >
+                                        {isCompleted ? (
+                                          <CheckCircle2
+                                            className={`h-4 w-4 text-${section.color}-400 flex-shrink-0`}
+                                          />
+                                        ) : !isLessonAccessible ? (
+                                          <Lock className="h-4 w-4 text-slate-600 flex-shrink-0" />
+                                        ) : (
+                                          <Circle className="h-4 w-4 text-slate-600 flex-shrink-0" />
+                                        )}
+                                      </motion.div>
+                                      <span
+                                        className={`truncate ${!isLessonAccessible ? "text-slate-600" : ""}`}
+                                      >
+                                        {lesson.title}
+                                      </span>
+                                    </motion.button>
+                                  );
+                                })}
+                              </div>
+                            </motion.div>
+                          );
+                        })}
                       </div>
                     </CardContent>
                   </Card>

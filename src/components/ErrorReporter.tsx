@@ -48,7 +48,7 @@ export default function ErrorReporter({ error, reset }: ReporterProps) {
       const overlay = document.querySelector("[data-nextjs-dialog-overlay]");
       const node =
         overlay?.querySelector(
-          "h1, h2, .error-message, [data-nextjs-dialog-body]"
+          "h1, h2, .error-message, [data-nextjs-dialog-body]",
         ) ?? null;
       const txt = node?.textContent ?? node?.innerHTML ?? "";
       if (txt && txt !== lastOverlayMsg.current) {
@@ -87,7 +87,7 @@ export default function ErrorReporter({ error, reset }: ReporterProps) {
         timestamp: Date.now(),
         userAgent: navigator.userAgent,
       },
-      "*"
+      "*",
     );
   }, [error]);
 
@@ -104,7 +104,7 @@ export default function ErrorReporter({ error, reset }: ReporterProps) {
               Something went wrong!
             </h1>
             <p className="text-muted-foreground">
-              An unexpected error occurred. Please try again fixing with Orchids
+              An unexpected error occurred. Please try again.
             </p>
           </div>
           <div className="space-y-2">
