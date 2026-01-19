@@ -136,202 +136,228 @@ const LESSONS: Lesson[] = [
     title: "Your First Insert",
     category: "beginner",
     objective: "Learn how to insert a single document into MongoDB",
-    explanation: "The insertOne() operation adds a single document to a collection. MongoDB automatically creates a unique _id field if you don't provide one. Documents are stored as BSON (Binary JSON), which supports additional data types like Date and ObjectId.",
+    explanation:
+      "The insertOne() operation adds a single document to a collection. MongoDB automatically creates a unique _id field if you don't provide one. Documents are stored as BSON (Binary JSON), which supports additional data types like Date and ObjectId.",
     operation: "insert",
     sampleData: {
       name: "Sarah Connor",
       email: "sarah@skynet.com",
       age: 35,
-      role: "resistance_leader"
+      role: "resistance_leader",
     },
-    expectedResult: "A new document will be created with an auto-generated _id. The response shows 'acknowledged: true' and the insertedId.",
+    expectedResult:
+      "A new document will be created with an auto-generated _id. The response shows 'acknowledged: true' and the insertedId.",
     tips: [
       "MongoDB is schema-flexible - you can add different fields to different documents",
       "The _id field is automatically indexed for fast lookups",
-      "Use meaningful field names for better queryability"
+      "Use meaningful field names for better queryability",
     ],
-    nextLesson: "bulk-insert-basics"
+    nextLesson: "bulk-insert-basics",
   },
   {
     id: "bulk-insert-basics",
     title: "Bulk Insert Multiple Documents",
     category: "beginner",
     objective: "Learn how to insert multiple documents at once",
-    explanation: "The insertMany() operation efficiently inserts multiple documents in a single database call. This is much faster than inserting documents one by one, especially when dealing with large datasets.",
+    explanation:
+      "The insertMany() operation efficiently inserts multiple documents in a single database call. This is much faster than inserting documents one by one, especially when dealing with large datasets.",
     operation: "bulk-insert",
     sampleData: [
       { name: "Neo", email: "neo@matrix.com", age: 30, role: "the_one" },
       { name: "Trinity", email: "trinity@matrix.com", age: 28, role: "hacker" },
-      { name: "Morpheus", email: "morpheus@matrix.com", age: 45, role: "captain" }
+      {
+        name: "Morpheus",
+        email: "morpheus@matrix.com",
+        age: 45,
+        role: "captain",
+      },
     ],
-    expectedResult: "All documents will be inserted and you'll see the count of inserted documents along with their generated _ids.",
+    expectedResult:
+      "All documents will be inserted and you'll see the count of inserted documents along with their generated _ids.",
     tips: [
       "Bulk operations are atomic by default - all succeed or all fail",
       "Use ordered: false option to continue inserting even if one fails",
-      "Maximum 100 documents per batch in this demo"
+      "Maximum 100 documents per batch in this demo",
     ],
-    nextLesson: "find-all"
+    nextLesson: "find-all",
   },
   {
     id: "find-all",
     title: "Finding Documents",
     category: "beginner",
     objective: "Learn how to query and retrieve documents",
-    explanation: "The find() operation retrieves documents from a collection. An empty query {} returns all documents. You can add conditions to filter results using comparison operators like $eq, $gt, $lt, etc.",
+    explanation:
+      "The find() operation retrieves documents from a collection. An empty query {} returns all documents. You can add conditions to filter results using comparison operators like $eq, $gt, $lt, etc.",
     operation: "find",
     sampleData: {},
-    expectedResult: "All documents in the collection will be returned. The response includes execution metrics and query plan information.",
+    expectedResult:
+      "All documents in the collection will be returned. The response includes execution metrics and query plan information.",
     tips: [
       "Empty query {} returns all documents (limited to 100 in this demo)",
       "MongoDB returns a cursor - we convert it to an array",
-      "Check the 'indexUsed' field to see if your query uses an index"
+      "Check the 'indexUsed' field to see if your query uses an index",
     ],
-    nextLesson: "find-filter"
+    nextLesson: "find-filter",
   },
   {
     id: "find-filter",
     title: "Filtering with Conditions",
     category: "beginner",
     objective: "Learn to filter documents using query operators",
-    explanation: "MongoDB provides powerful query operators: $gt (greater than), $gte (greater than or equal), $lt (less than), $lte (less than or equal), $eq (equal), $ne (not equal), $in (in array), $regex (pattern matching).",
+    explanation:
+      "MongoDB provides powerful query operators: $gt (greater than), $gte (greater than or equal), $lt (less than), $lte (less than or equal), $eq (equal), $ne (not equal), $in (in array), $regex (pattern matching).",
     operation: "find",
     sampleData: { age: { $gte: 30 } },
-    expectedResult: "Only documents where age is 30 or higher will be returned. Notice how the query plan shows which fields were examined.",
+    expectedResult:
+      "Only documents where age is 30 or higher will be returned. Notice how the query plan shows which fields were examined.",
     tips: [
       "Combine multiple conditions: { age: { $gte: 25, $lte: 40 } }",
       "Use $or for alternative conditions: { $or: [{ age: 30 }, { role: 'admin' }] }",
-      "String queries are case-sensitive by default"
+      "String queries are case-sensitive by default",
     ],
-    nextLesson: "update-basics"
+    nextLesson: "update-basics",
   },
   {
     id: "update-basics",
     title: "Updating Documents",
     category: "beginner",
     objective: "Learn how to modify existing documents",
-    explanation: "The updateMany() operation modifies documents matching a filter. Use $set to update specific fields without affecting others. Other update operators include $inc (increment), $unset (remove field), $push (add to array), $pull (remove from array).",
+    explanation:
+      "The updateMany() operation modifies documents matching a filter. Use $set to update specific fields without affecting others. Other update operators include $inc (increment), $unset (remove field), $push (add to array), $pull (remove from array).",
     operation: "update",
     sampleData: {
       filter: { role: "the_one" },
-      update: { $set: { status: "awakened", power_level: 9001 } }
+      update: { $set: { status: "awakened", power_level: 9001 } },
     },
-    expectedResult: "Documents matching the filter will be updated. The response shows matchedCount and modifiedCount.",
+    expectedResult:
+      "Documents matching the filter will be updated. The response shows matchedCount and modifiedCount.",
     tips: [
       "Always use update operators ($set, $inc, etc.) - don't replace the entire document",
       "Use $inc to increment numbers: { $inc: { views: 1 } }",
-      "modifiedCount may differ from matchedCount if values are already set"
+      "modifiedCount may differ from matchedCount if values are already set",
     ],
-    nextLesson: "delete-basics"
+    nextLesson: "delete-basics",
   },
   {
     id: "delete-basics",
     title: "Deleting Documents",
     category: "beginner",
     objective: "Learn how to remove documents from a collection",
-    explanation: "The deleteMany() operation removes all documents matching the filter. Use with caution - deleted data cannot be recovered! Always test your filter with find() first to verify which documents will be affected.",
+    explanation:
+      "The deleteMany() operation removes all documents matching the filter. Use with caution - deleted data cannot be recovered! Always test your filter with find() first to verify which documents will be affected.",
     operation: "delete",
     sampleData: { role: "captain" },
-    expectedResult: "All documents matching the filter will be permanently deleted. The response shows deletedCount.",
+    expectedResult:
+      "All documents matching the filter will be permanently deleted. The response shows deletedCount.",
     tips: [
       "Test with find() first to see what will be deleted",
       "Empty filter {} deletes ALL documents - be careful!",
-      "Consider soft deletes (adding a 'deleted' field) for recoverable deletions"
+      "Consider soft deletes (adding a 'deleted' field) for recoverable deletions",
     ],
-    nextLesson: "aggregate-match"
+    nextLesson: "aggregate-match",
   },
   {
     id: "aggregate-match",
     title: "Aggregation: $match Stage",
     category: "intermediate",
     objective: "Learn the aggregation pipeline and $match stage",
-    explanation: "The aggregation pipeline processes documents through multiple stages. $match filters documents (similar to find). Place $match early in the pipeline to reduce the number of documents processed by later stages.",
+    explanation:
+      "The aggregation pipeline processes documents through multiple stages. $match filters documents (similar to find). Place $match early in the pipeline to reduce the number of documents processed by later stages.",
     operation: "aggregate",
-    sampleData: [
-      { $match: { age: { $gte: 25 } } }
-    ],
-    expectedResult: "Documents passing the $match condition will be returned. This is similar to find() but can be combined with other stages.",
+    sampleData: [{ $match: { age: { $gte: 25 } } }],
+    expectedResult:
+      "Documents passing the $match condition will be returned. This is similar to find() but can be combined with other stages.",
     tips: [
       "$match uses the same query syntax as find()",
       "Place $match early to reduce documents in the pipeline",
-      "$match can use indexes, improving performance"
+      "$match can use indexes, improving performance",
     ],
-    nextLesson: "aggregate-group"
+    nextLesson: "aggregate-group",
   },
   {
     id: "aggregate-group",
     title: "Aggregation: $group Stage",
     category: "intermediate",
     objective: "Learn to group and aggregate data",
-    explanation: "$group combines documents by a specified _id field and calculates aggregate values. Use accumulator operators like $sum, $avg, $min, $max, $push, $first, $last to compute values across grouped documents.",
+    explanation:
+      "$group combines documents by a specified _id field and calculates aggregate values. Use accumulator operators like $sum, $avg, $min, $max, $push, $first, $last to compute values across grouped documents.",
     operation: "aggregate",
     sampleData: [
-      { $group: { _id: "$role", count: { $sum: 1 }, avgAge: { $avg: "$age" } } }
+      {
+        $group: { _id: "$role", count: { $sum: 1 }, avgAge: { $avg: "$age" } },
+      },
     ],
-    expectedResult: "Documents will be grouped by the 'role' field. Each group shows the count and average age.",
+    expectedResult:
+      "Documents will be grouped by the 'role' field. Each group shows the count and average age.",
     tips: [
       "_id: null groups all documents together",
       "Use $sum: 1 to count documents in each group",
-      "Field references start with $ (e.g., '$fieldName')"
+      "Field references start with $ (e.g., '$fieldName')",
     ],
-    nextLesson: "aggregate-sort"
+    nextLesson: "aggregate-sort",
   },
   {
     id: "aggregate-sort",
     title: "Aggregation: $sort & $limit",
     category: "intermediate",
     objective: "Learn to sort and limit aggregation results",
-    explanation: "$sort orders documents by specified fields (1 for ascending, -1 for descending). $limit restricts the number of results. $skip can be used for pagination. These stages are commonly used together.",
+    explanation:
+      "$sort orders documents by specified fields (1 for ascending, -1 for descending). $limit restricts the number of results. $skip can be used for pagination. These stages are commonly used together.",
     operation: "aggregate",
     sampleData: [
       { $match: { age: { $exists: true } } },
       { $sort: { age: -1 } },
-      { $limit: 3 }
+      { $limit: 3 },
     ],
-    expectedResult: "The top 3 oldest people will be returned, sorted by age in descending order.",
+    expectedResult:
+      "The top 3 oldest people will be returned, sorted by age in descending order.",
     tips: [
       "Sort before $limit to get 'top N' results",
       "Sorting large datasets without an index is slow",
-      "Use { $skip: N } for pagination"
+      "Use { $skip: N } for pagination",
     ],
-    nextLesson: "aggregate-project"
+    nextLesson: "aggregate-project",
   },
   {
     id: "aggregate-project",
     title: "Aggregation: $project Stage",
     category: "intermediate",
     objective: "Learn to reshape documents with $project",
-    explanation: "$project specifies which fields to include, exclude, or compute. Use 1 to include, 0 to exclude, or expressions to compute new fields. This is useful for data transformation and reducing response size.",
+    explanation:
+      "$project specifies which fields to include, exclude, or compute. Use 1 to include, 0 to exclude, or expressions to compute new fields. This is useful for data transformation and reducing response size.",
     operation: "aggregate",
     sampleData: [
-      { 
-        $project: { 
+      {
+        $project: {
           _id: 0,
           fullName: { $toUpper: "$name" },
           email: 1,
-          ageGroup: { 
-            $cond: { 
-              if: { $gte: ["$age", 30] }, 
-              then: "senior", 
-              else: "junior" 
-            } 
-          }
-        } 
-      }
+          ageGroup: {
+            $cond: {
+              if: { $gte: ["$age", 30] },
+              then: "senior",
+              else: "junior",
+            },
+          },
+        },
+      },
     ],
-    expectedResult: "Documents will be reshaped with uppercase names, emails, and a computed ageGroup field.",
+    expectedResult:
+      "Documents will be reshaped with uppercase names, emails, and a computed ageGroup field.",
     tips: [
       "_id is included by default - use _id: 0 to exclude",
       "Use $concat to combine strings: { $concat: ['$firstName', ' ', '$lastName'] }",
-      "$cond provides if-then-else logic"
+      "$cond provides if-then-else logic",
     ],
-    nextLesson: "aggregate-lookup"
+    nextLesson: "aggregate-lookup",
   },
   {
     id: "aggregate-lookup",
     title: "Aggregation: $unwind",
     category: "advanced",
     objective: "Learn to deconstruct arrays with $unwind",
-    explanation: "$unwind deconstructs an array field, outputting one document for each element. This is useful for array analysis, normalization, or preparing data for $group operations on array elements.",
+    explanation:
+      "$unwind deconstructs an array field, outputting one document for each element. This is useful for array analysis, normalization, or preparing data for $group operations on array elements.",
     operation: "aggregate",
     sampleData: [
       { $match: { name: { $exists: true } } },
@@ -339,53 +365,111 @@ const LESSONS: Lesson[] = [
       { $unwind: "$letters" },
       { $group: { _id: "$letters", count: { $sum: 1 } } },
       { $sort: { count: -1 } },
-      { $limit: 5 }
+      { $limit: 5 },
     ],
-    expectedResult: "This complex pipeline splits names into letters, unwinds them, and counts letter frequency - showing the most common letters.",
+    expectedResult:
+      "This complex pipeline splits names into letters, unwinds them, and counts letter frequency - showing the most common letters.",
     tips: [
       "$unwind creates one document per array element",
       "Use preserveNullAndEmptyArrays: true to keep documents with empty arrays",
-      "Great for analyzing nested data structures"
-    ]
-  }
+      "Great for analyzing nested data structures",
+    ],
+  },
 ];
 
 const SAMPLE_DATA = {
   users: [
-    { name: "Alice Johnson", email: "alice@example.com", age: 28, department: "Engineering" },
-    { name: "Bob Smith", email: "bob@example.com", age: 34, department: "Marketing" },
-    { name: "Carol Davis", email: "carol@example.com", age: 25, department: "Engineering" },
-    { name: "David Wilson", email: "david@example.com", age: 42, department: "Sales" },
-    { name: "Eve Martinez", email: "eve@example.com", age: 31, department: "HR" },
+    {
+      name: "Alice Johnson",
+      email: "alice@example.com",
+      age: 28,
+      department: "Engineering",
+    },
+    {
+      name: "Bob Smith",
+      email: "bob@example.com",
+      age: 34,
+      department: "Marketing",
+    },
+    {
+      name: "Carol Davis",
+      email: "carol@example.com",
+      age: 25,
+      department: "Engineering",
+    },
+    {
+      name: "David Wilson",
+      email: "david@example.com",
+      age: 42,
+      department: "Sales",
+    },
+    {
+      name: "Eve Martinez",
+      email: "eve@example.com",
+      age: 31,
+      department: "HR",
+    },
   ],
   products: [
     { name: "Laptop Pro", price: 1299.99, category: "Electronics", stock: 50 },
-    { name: "Wireless Mouse", price: 29.99, category: "Electronics", stock: 200 },
+    {
+      name: "Wireless Mouse",
+      price: 29.99,
+      category: "Electronics",
+      stock: 200,
+    },
     { name: "Office Chair", price: 349.99, category: "Furniture", stock: 30 },
     { name: "Desk Lamp", price: 49.99, category: "Furniture", stock: 100 },
     { name: "USB Hub", price: 19.99, category: "Electronics", stock: 150 },
   ],
   orders: [
-    { orderId: "ORD001", customer: "Alice Johnson", total: 1329.98, status: "shipped" },
-    { orderId: "ORD002", customer: "Bob Smith", total: 399.98, status: "pending" },
-    { orderId: "ORD003", customer: "Carol Davis", total: 69.98, status: "delivered" },
-    { orderId: "ORD004", customer: "David Wilson", total: 1649.97, status: "processing" },
+    {
+      orderId: "ORD001",
+      customer: "Alice Johnson",
+      total: 1329.98,
+      status: "shipped",
+    },
+    {
+      orderId: "ORD002",
+      customer: "Bob Smith",
+      total: 399.98,
+      status: "pending",
+    },
+    {
+      orderId: "ORD003",
+      customer: "Carol Davis",
+      total: 69.98,
+      status: "delivered",
+    },
+    {
+      orderId: "ORD004",
+      customer: "David Wilson",
+      total: 1649.97,
+      status: "processing",
+    },
   ],
 };
 
 const PLACEHOLDERS: Record<Operation, string> = {
-  insert: JSON.stringify({ name: "John Doe", email: "john@example.com", age: 30 }, null, 2),
+  insert: JSON.stringify(
+    { name: "John Doe", email: "john@example.com", age: 30 },
+    null,
+    2,
+  ),
   find: JSON.stringify({ age: { $gte: 25 } }, null, 2),
   update: JSON.stringify(
     { filter: { name: "John Doe" }, update: { $set: { age: 31 } } },
     null,
-    2
+    2,
   ),
   delete: JSON.stringify({ name: "John Doe" }, null, 2),
   aggregate: JSON.stringify(
-    [{ $match: { age: { $gte: 25 } } }, { $group: { _id: "$department", count: { $sum: 1 } } }],
+    [
+      { $match: { age: { $gte: 25 } } },
+      { $group: { _id: "$department", count: { $sum: 1 } } },
+    ],
     null,
-    2
+    2,
   ),
   "bulk-insert": JSON.stringify(
     [
@@ -393,11 +477,11 @@ const PLACEHOLDERS: Record<Operation, string> = {
       { name: "User 2", email: "user2@example.com" },
     ],
     null,
-    2
+    2,
   ),
 };
 
-const OPERATION_ICONS: Record<Operation, React.ReactNode> = {
+const OPERATION_ICONS: Record<Operation, React.ReactElement> = {
   insert: <Plus className="h-4 w-4" />,
   find: <Search className="h-4 w-4" />,
   update: <RefreshCw className="h-4 w-4" />,
@@ -412,7 +496,13 @@ const CATEGORY_COLORS = {
   advanced: "text-rose-400 bg-rose-500/10 border-rose-500/30",
 };
 
-const DataPacket = ({ delay, duration }: { delay: number; duration: number }) => (
+const DataPacket = ({
+  delay,
+  duration,
+}: {
+  delay: number;
+  duration: number;
+}) => (
   <motion.div
     className="absolute h-2 w-2 rounded-full bg-emerald-400 shadow-lg shadow-emerald-400/50"
     initial={{ left: "0%", opacity: 0 }}
@@ -454,12 +544,12 @@ const PulseRing = ({ active }: { active: boolean }) => (
 const FloatingParticle = ({ delay }: { delay: number }) => (
   <motion.div
     className="absolute h-1 w-1 rounded-full bg-emerald-400/60"
-    initial={{ 
-      x: Math.random() * 100, 
+    initial={{
+      x: Math.random() * 100,
       y: Math.random() * 100,
-      opacity: 0 
+      opacity: 0,
     }}
-    animate={{ 
+    animate={{
       y: [null, -20, 0],
       opacity: [0, 1, 0],
     }}
@@ -474,29 +564,64 @@ const FloatingParticle = ({ delay }: { delay: number }) => (
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("playground");
+  const [inputMethod, setInputMethod] = useState<"json" | "ui">("json");
   const [operation, setOperation] = useState<Operation>("insert");
   const [jsonInput, setJsonInput] = useState(PLACEHOLDERS.insert);
+  const [formFields, setFormFields] = useState<
+    Array<{ key: string; value: string }>
+  >([{ key: "", value: "" }]);
   const [result, setResult] = useState<Record<string, unknown> | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [flowSteps, setFlowSteps] = useState<FlowStep[]>([
-    { id: "ui", label: "UI Input", icon: <FileJson className="h-5 w-5" />, status: "idle" },
-    { id: "frontend", label: "Frontend", icon: <Zap className="h-5 w-5" />, status: "idle" },
-    { id: "api", label: "API Route", icon: <Server className="h-5 w-5" />, status: "idle" },
-    { id: "mongodb", label: "MongoDB", icon: <Database className="h-5 w-5" />, status: "idle" },
-    { id: "bson", label: "BSON", icon: <HardDrive className="h-5 w-5" />, status: "idle" },
+    {
+      id: "ui",
+      label: "UI Input",
+      icon: <FileJson className="h-5 w-5" />,
+      status: "idle",
+    },
+    {
+      id: "frontend",
+      label: "Frontend",
+      icon: <Zap className="h-5 w-5" />,
+      status: "idle",
+    },
+    {
+      id: "api",
+      label: "API Route",
+      icon: <Server className="h-5 w-5" />,
+      status: "idle",
+    },
+    {
+      id: "mongodb",
+      label: "MongoDB",
+      icon: <Database className="h-5 w-5" />,
+      status: "idle",
+    },
+    {
+      id: "bson",
+      label: "BSON",
+      icon: <HardDrive className="h-5 w-5" />,
+      status: "idle",
+    },
   ]);
 
   const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null);
-  const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set());
+  const [completedLessons, setCompletedLessons] = useState<Set<string>>(
+    new Set(),
+  );
   const [showTip, setShowTip] = useState(false);
 
   const [githubUrl, setGithubUrl] = useState("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
+  const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(
+    null,
+  );
   const [analysisError, setAnalysisError] = useState<string | null>(null);
   const [selectedNode, setSelectedNode] = useState<FlowNode | null>(null);
-  const [flowSpeed, setFlowSpeed] = useState<"slow" | "normal" | "fast">("normal");
+  const [flowSpeed, setFlowSpeed] = useState<"slow" | "normal" | "fast">(
+    "normal",
+  );
   const [showLiveMetrics, setShowLiveMetrics] = useState(true);
   const [liveMetrics, setLiveMetrics] = useState({
     requestsPerSec: 0,
@@ -533,7 +658,7 @@ export default function Home() {
   useEffect(() => {
     if (isLoading) {
       const interval = setInterval(() => {
-        setLiveMetrics(prev => ({
+        setLiveMetrics((prev) => ({
           requestsPerSec: Math.random() * 10 + 5,
           avgLatency: Math.random() * 50 + 10,
           activeConnections: Math.floor(Math.random() * 3) + 1,
@@ -548,20 +673,37 @@ export default function Home() {
     const updated = new Set(completedLessons);
     updated.add(lessonId);
     setCompletedLessons(updated);
-    localStorage.setItem("mongoflow-completed-lessons", JSON.stringify([...updated]));
+    localStorage.setItem(
+      "mongoflow-completed-lessons",
+      JSON.stringify([...updated]),
+    );
   };
 
   const resetFlow = useCallback(() => {
-    setFlowSteps((steps) => steps.map((s) => ({ ...s, status: "idle", details: undefined, dataPreview: undefined })));
+    setFlowSteps((steps) =>
+      steps.map((s) => ({
+        ...s,
+        status: "idle",
+        details: undefined,
+        dataPreview: undefined,
+      })),
+    );
   }, []);
 
   const updateFlowStep = useCallback(
-    (id: string, status: FlowStep["status"], details?: string, dataPreview?: string) => {
+    (
+      id: string,
+      status: FlowStep["status"],
+      details?: string,
+      dataPreview?: string,
+    ) => {
       setFlowSteps((steps) =>
-        steps.map((s) => (s.id === id ? { ...s, status, details, dataPreview } : s))
+        steps.map((s) =>
+          s.id === id ? { ...s, status, details, dataPreview } : s,
+        ),
       );
     },
-    []
+    [],
   );
 
   const handleOperationChange = (value: Operation) => {
@@ -575,6 +717,40 @@ export default function Home() {
   const loadSampleData = async (dataset: keyof typeof SAMPLE_DATA) => {
     setJsonInput(JSON.stringify(SAMPLE_DATA[dataset], null, 2));
     setOperation("bulk-insert");
+  };
+
+  const addFormField = () => {
+    setFormFields([...formFields, { key: "", value: "" }]);
+  };
+
+  const removeFormField = (index: number) => {
+    setFormFields(formFields.filter((_, i) => i !== index));
+  };
+
+  const updateFormField = (
+    index: number,
+    field: "key" | "value",
+    value: string,
+  ) => {
+    const updated = [...formFields];
+    updated[index][field] = value;
+    setFormFields(updated);
+  };
+
+  const generateJSONFromForm = () => {
+    const obj: Record<string, unknown> = {};
+    formFields.forEach((field) => {
+      if (field.key.trim()) {
+        // Try to parse as number or boolean, otherwise keep as string
+        let value: unknown = field.value;
+        if (field.value === "true") value = true;
+        else if (field.value === "false") value = false;
+        else if (!isNaN(Number(field.value)) && field.value !== "")
+          value = Number(field.value);
+        obj[field.key] = value;
+      }
+    });
+    return JSON.stringify(obj, null, 2);
   };
 
   const loadLesson = (lesson: Lesson) => {
@@ -603,7 +779,9 @@ export default function Home() {
 
     const match = githubUrl.match(/github\.com\/([^/]+)\/([^/]+)/);
     if (!match) {
-      setAnalysisError("Invalid GitHub URL format. Use: https://github.com/owner/repo");
+      setAnalysisError(
+        "Invalid GitHub URL format. Use: https://github.com/owner/repo",
+      );
       return;
     }
 
@@ -626,25 +804,33 @@ export default function Home() {
 
       setAnalysisResult(result);
     } catch (err) {
-      setAnalysisError(err instanceof Error ? err.message : "Failed to analyze repository");
+      setAnalysisError(
+        err instanceof Error ? err.message : "Failed to analyze repository",
+      );
     } finally {
       setIsAnalyzing(false);
     }
   };
 
-  const speedMultiplier = flowSpeed === "slow" ? 2 : flowSpeed === "fast" ? 0.5 : 1;
+  const speedMultiplier =
+    flowSpeed === "slow" ? 2 : flowSpeed === "fast" ? 0.5 : 1;
 
   const executeOperation = async () => {
     setIsLoading(true);
     setError(null);
     setResult(null);
     resetFlow();
-    setLiveMetrics(prev => ({ ...prev, dataTransferred: 0 }));
+    setLiveMetrics((prev) => ({ ...prev, dataTransferred: 0 }));
 
     try {
-      updateFlowStep("ui", "active", "Validating JSON...", jsonInput.slice(0, 30) + "...");
+      updateFlowStep(
+        "ui",
+        "active",
+        "Validating JSON...",
+        jsonInput.slice(0, 30) + "...",
+      );
       await new Promise((r) => setTimeout(r, 300 * speedMultiplier));
-      
+
       let parsedInput;
       try {
         parsedInput = JSON.parse(jsonInput);
@@ -653,12 +839,17 @@ export default function Home() {
       }
       updateFlowStep("ui", "completed", "JSON validated");
 
-      updateFlowStep("frontend", "active", "Preparing request...", `POST /api/${operation}`);
+      updateFlowStep(
+        "frontend",
+        "active",
+        "Preparing request...",
+        `POST /api/${operation}`,
+      );
       await new Promise((r) => setTimeout(r, 300 * speedMultiplier));
       updateFlowStep("frontend", "completed", "Request prepared");
 
       updateFlowStep("api", "active", `${operation.toUpperCase()}...`);
-      
+
       const response = await fetch(`/api/${operation}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -666,7 +857,7 @@ export default function Home() {
       });
 
       const data = await response.json();
-      
+
       if (!data.success) {
         throw new Error(data.error || "Operation failed");
       }
@@ -684,17 +875,19 @@ export default function Home() {
       setResult(data);
 
       if (data.metrics) {
-        setPerformanceLog((prev) => [
-          {
-            timestamp: Date.now(),
-            operation: data.metrics.operation,
-            executionTime: data.metrics.executionTime,
-            documentsExamined: data.metrics.documentsExamined,
-            documentsReturned: data.metrics.documentsReturned,
-            indexUsed: data.metrics.indexUsed,
-          },
-          ...prev,
-        ].slice(0, 50));
+        setPerformanceLog((prev) =>
+          [
+            {
+              timestamp: Date.now(),
+              operation: data.metrics.operation,
+              executionTime: data.metrics.executionTime,
+              documentsExamined: data.metrics.documentsExamined,
+              documentsReturned: data.metrics.documentsReturned,
+              indexUsed: data.metrics.indexUsed,
+            },
+            ...prev,
+          ].slice(0, 50),
+        );
       }
 
       if (selectedLesson && activeTab === "learning") {
@@ -703,7 +896,7 @@ export default function Home() {
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "Unknown error";
       setError(errorMessage);
-      
+
       const activeStep = flowSteps.find((s) => s.status === "active");
       if (activeStep) {
         updateFlowStep(activeStep.id, "error", errorMessage);
@@ -729,27 +922,39 @@ export default function Home() {
 
   const progressPercentage = (completedLessons.size / LESSONS.length) * 100;
 
-  const beginnerLessons = LESSONS.filter(l => l.category === "beginner");
-  const intermediateLessons = LESSONS.filter(l => l.category === "intermediate");
-  const advancedLessons = LESSONS.filter(l => l.category === "advanced");
+  const beginnerLessons = LESSONS.filter((l) => l.category === "beginner");
+  const intermediateLessons = LESSONS.filter(
+    (l) => l.category === "intermediate",
+  );
+  const advancedLessons = LESSONS.filter((l) => l.category === "advanced");
 
   const getNodeColor = (type: FlowNode["type"]) => {
     switch (type) {
-      case "controller": return "from-blue-500 to-blue-600";
-      case "service": return "from-purple-500 to-purple-600";
-      case "model": return "from-amber-500 to-amber-600";
-      case "database": return "from-emerald-500 to-emerald-600";
-      default: return "from-slate-500 to-slate-600";
+      case "controller":
+        return "from-blue-500 to-blue-600";
+      case "service":
+        return "from-purple-500 to-purple-600";
+      case "model":
+        return "from-amber-500 to-amber-600";
+      case "database":
+        return "from-emerald-500 to-emerald-600";
+      default:
+        return "from-slate-500 to-slate-600";
     }
   };
 
   const getNodeIcon = (type: FlowNode["type"]) => {
     switch (type) {
-      case "controller": return <Workflow className="h-5 w-5" />;
-      case "service": return <Layers className="h-5 w-5" />;
-      case "model": return <Box className="h-5 w-5" />;
-      case "database": return <Database className="h-5 w-5" />;
-      default: return <Code2 className="h-5 w-5" />;
+      case "controller":
+        return <Workflow className="h-5 w-5" />;
+      case "service":
+        return <Layers className="h-5 w-5" />;
+      case "model":
+        return <Box className="h-5 w-5" />;
+      case "database":
+        return <Database className="h-5 w-5" />;
+      default:
+        return <Code2 className="h-5 w-5" />;
     }
   };
 
@@ -773,7 +978,12 @@ export default function Home() {
             opacity: [0.2, 0.4, 0.2],
             y: [0, -50, 0],
           }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 5 }}
+          transition={{
+            duration: 10,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 5,
+          }}
         />
         <motion.div
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] rounded-full bg-cyan-500/5 blur-[120px]"
@@ -787,9 +997,9 @@ export default function Home() {
           <FloatingParticle key={i} delay={i * 0.5} />
         ))}
       </div>
-      
+
       <div className="relative">
-        <motion.header 
+        <motion.header
           className="border-b border-emerald-500/20 bg-[#0d1117]/80 backdrop-blur-xl sticky top-0 z-50"
           initial={{ y: -100 }}
           animate={{ y: 0 }}
@@ -797,11 +1007,11 @@ export default function Home() {
         >
           <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between">
-              <motion.div 
+              <motion.div
                 className="flex items-center gap-3"
                 whileHover={{ scale: 1.02 }}
               >
-                <motion.div 
+                <motion.div
                   className="relative rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 p-2"
                   whileHover={{ rotate: [0, -10, 10, 0] }}
                   transition={{ duration: 0.5 }}
@@ -823,7 +1033,10 @@ export default function Home() {
                   </p>
                 </div>
               </motion.div>
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
                 <Button
                   variant="outline"
                   size="sm"
@@ -840,26 +1053,42 @@ export default function Home() {
         </motion.header>
 
         <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 relative">
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+          <Tabs
+            value={activeTab}
+            onValueChange={setActiveTab}
+            className="space-y-6"
+          >
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
             >
               <TabsList className="bg-[#161b22]/80 backdrop-blur-sm border border-emerald-500/20">
-                <TabsTrigger value="playground" className="data-[state=active]:bg-emerald-500/20 data-[state=active]:text-emerald-400 transition-all">
+                <TabsTrigger
+                  value="playground"
+                  className="data-[state=active]:bg-emerald-500/20 data-[state=active]:text-emerald-400 transition-all"
+                >
                   <Play className="mr-2 h-4 w-4" />
                   Playground
                 </TabsTrigger>
-                <TabsTrigger value="flow" className="data-[state=active]:bg-emerald-500/20 data-[state=active]:text-emerald-400 transition-all">
+                <TabsTrigger
+                  value="flow"
+                  className="data-[state=active]:bg-emerald-500/20 data-[state=active]:text-emerald-400 transition-all"
+                >
                   <Network className="mr-2 h-4 w-4" />
                   Data Flow
                 </TabsTrigger>
-                <TabsTrigger value="learning" className="data-[state=active]:bg-emerald-500/20 data-[state=active]:text-emerald-400 transition-all">
+                <TabsTrigger
+                  value="learning"
+                  className="data-[state=active]:bg-emerald-500/20 data-[state=active]:text-emerald-400 transition-all"
+                >
                   <GraduationCap className="mr-2 h-4 w-4" />
                   Learning
                 </TabsTrigger>
-                <TabsTrigger value="monitoring" className="data-[state=active]:bg-emerald-500/20 data-[state=active]:text-emerald-400 transition-all">
+                <TabsTrigger
+                  value="monitoring"
+                  className="data-[state=active]:bg-emerald-500/20 data-[state=active]:text-emerald-400 transition-all"
+                >
                   <Activity className="mr-2 h-4 w-4" />
                   Monitoring
                 </TabsTrigger>
@@ -867,7 +1096,7 @@ export default function Home() {
             </motion.div>
 
             <TabsContent value="playground" className="space-y-6">
-              <motion.div 
+              <motion.div
                 className="grid gap-6 lg:grid-cols-2"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -882,69 +1111,206 @@ export default function Home() {
                     <CardHeader className="border-b border-emerald-500/10 pb-4">
                       <div className="flex items-center justify-between">
                         <CardTitle className="text-lg text-emerald-400">
-                          Operation
+                          Input Method
                         </CardTitle>
-                        <Select value={operation} onValueChange={handleOperationChange}>
-                          <SelectTrigger className="w-[180px] border-emerald-500/30 bg-[#0d1117] text-slate-100">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent className="border-emerald-500/30 bg-[#161b22] text-slate-100">
-                            <SelectItem value="insert">Insert One</SelectItem>
-                            <SelectItem value="bulk-insert">Bulk Insert</SelectItem>
-                            <SelectItem value="find">Find</SelectItem>
-                            <SelectItem value="update">Update</SelectItem>
-                            <SelectItem value="delete">Delete</SelectItem>
-                            <SelectItem value="aggregate">Aggregate</SelectItem>
-                          </SelectContent>
-                        </Select>
+                        <Tabs
+                          value={inputMethod}
+                          onValueChange={(value: "json" | "ui") =>
+                            setInputMethod(value)
+                          }
+                          className="w-auto"
+                        >
+                          <TabsList className="bg-[#0d1117]/80 backdrop-blur-sm border border-emerald-500/20">
+                            <TabsTrigger
+                              value="json"
+                              className="data-[state=active]:bg-emerald-500/20 data-[state=active]:text-emerald-400 text-xs"
+                            >
+                              JSON Input
+                            </TabsTrigger>
+                            <TabsTrigger
+                              value="ui"
+                              className="data-[state=active]:bg-emerald-500/20 data-[state=active]:text-emerald-400 text-xs"
+                            >
+                              UI Form
+                            </TabsTrigger>
+                          </TabsList>
+                        </Tabs>
                       </div>
                     </CardHeader>
                     <CardContent className="pt-4">
-                      <div className="mb-4">
-                        <div className="mb-2 flex items-center justify-between">
-                          <span className="text-sm text-slate-400">JSON Input</span>
-                          <div className="flex gap-2">
-                            {(["users", "products", "orders"] as const).map((dataset) => (
-                              <motion.div key={dataset} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => loadSampleData(dataset)}
-                                  className="h-7 text-xs text-emerald-400 hover:bg-emerald-500/10"
-                                >
-                                  {dataset.charAt(0).toUpperCase() + dataset.slice(1)}
-                                </Button>
-                              </motion.div>
-                            ))}
+                      <Tabs value={inputMethod} className="w-full">
+                        <TabsContent value="json" className="mt-0">
+                          <div className="space-y-4">
+                            <div className="flex items-center justify-between">
+                              <Select
+                                value={operation}
+                                onValueChange={handleOperationChange}
+                              >
+                                <SelectTrigger className="w-[180px] border-emerald-500/30 bg-[#0d1117] text-slate-100">
+                                  <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent className="border-emerald-500/30 bg-[#161b22] text-slate-100">
+                                  <SelectItem value="insert">
+                                    Insert One
+                                  </SelectItem>
+                                  <SelectItem value="bulk-insert">
+                                    Bulk Insert
+                                  </SelectItem>
+                                  <SelectItem value="find">Find</SelectItem>
+                                  <SelectItem value="update">Update</SelectItem>
+                                  <SelectItem value="delete">Delete</SelectItem>
+                                  <SelectItem value="aggregate">
+                                    Aggregate
+                                  </SelectItem>
+                                </SelectContent>
+                              </Select>
+                              <div className="flex gap-2">
+                                {(["users", "products", "orders"] as const).map(
+                                  (dataset) => (
+                                    <motion.div
+                                      key={dataset}
+                                      whileHover={{ scale: 1.05 }}
+                                      whileTap={{ scale: 0.95 }}
+                                    >
+                                      <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={() => loadSampleData(dataset)}
+                                        className="h-7 text-xs text-emerald-400 hover:bg-emerald-500/10"
+                                      >
+                                        {dataset.charAt(0).toUpperCase() +
+                                          dataset.slice(1)}
+                                      </Button>
+                                    </motion.div>
+                                  ),
+                                )}
+                              </div>
+                            </div>
+                            <motion.textarea
+                              value={jsonInput}
+                              onChange={(e) => setJsonInput(e.target.value)}
+                              className="h-64 w-full rounded-lg border border-emerald-500/20 bg-[#0d1117] p-4 font-mono text-sm text-slate-100 focus:border-emerald-500/50 focus:outline-none focus:ring-2 focus:ring-emerald-500/30 transition-all"
+                              placeholder="Enter JSON here..."
+                              whileFocus={{ scale: 1.01 }}
+                            />
                           </div>
-                        </div>
-                        <motion.textarea
-                          value={jsonInput}
-                          onChange={(e) => setJsonInput(e.target.value)}
-                          className="h-64 w-full rounded-lg border border-emerald-500/20 bg-[#0d1117] p-4 font-mono text-sm text-slate-100 focus:border-emerald-500/50 focus:outline-none focus:ring-2 focus:ring-emerald-500/30 transition-all"
-                          placeholder="Enter JSON here..."
-                          whileFocus={{ scale: 1.01 }}
-                        />
-                      </div>
-                      <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                        <Button
-                          onClick={executeOperation}
-                          disabled={isLoading}
-                          className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:from-emerald-600 hover:to-teal-700 transition-all shadow-lg shadow-emerald-500/25"
-                        >
-                          {isLoading ? (
-                            <>
-                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                              Executing...
-                            </>
-                          ) : (
-                            <>
-                              <Play className="mr-2 h-4 w-4" />
-                              Execute Operation
-                            </>
-                          )}
-                        </Button>
-                      </motion.div>
+                        </TabsContent>
+
+                        <TabsContent value="ui" className="mt-0">
+                          <div className="space-y-4">
+                            <div className="flex items-center justify-between mb-4">
+                              <h4 className="text-sm font-medium text-emerald-400">
+                                Document Builder
+                              </h4>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => setFormFields([])}
+                                className="text-slate-400 hover:text-slate-300"
+                              >
+                                <RotateCcw className="h-4 w-4 mr-1" />
+                                Clear
+                              </Button>
+                            </div>
+
+                            <div className="space-y-3 max-h-64 overflow-y-auto">
+                              {formFields.map((field, index) => (
+                                <motion.div
+                                  key={index}
+                                  initial={{ opacity: 0, y: 10 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  exit={{ opacity: 0, y: -10 }}
+                                  className="flex items-center gap-3 p-3 rounded-lg border border-emerald-500/20 bg-[#0d1117]"
+                                >
+                                  <div className="flex-1 grid grid-cols-2 gap-3">
+                                    <input
+                                      type="text"
+                                      placeholder="Field name"
+                                      value={field.key}
+                                      onChange={(e) =>
+                                        updateFormField(
+                                          index,
+                                          "key",
+                                          e.target.value,
+                                        )
+                                      }
+                                      className="px-3 py-2 rounded border border-emerald-500/20 bg-[#0a0e14] text-slate-100 text-sm focus:border-emerald-500/50 focus:outline-none"
+                                    />
+                                    <input
+                                      type="text"
+                                      placeholder="Value"
+                                      value={field.value}
+                                      onChange={(e) =>
+                                        updateFormField(
+                                          index,
+                                          "value",
+                                          e.target.value,
+                                        )
+                                      }
+                                      className="px-3 py-2 rounded border border-emerald-500/20 bg-[#0a0e14] text-slate-100 text-sm focus:border-emerald-500/50 focus:outline-none"
+                                    />
+                                  </div>
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => removeFormField(index)}
+                                    className="text-red-400 hover:bg-red-500/10"
+                                  >
+                                    <X className="h-4 w-4" />
+                                  </Button>
+                                </motion.div>
+                              ))}
+                            </div>
+
+                            <motion.div
+                              whileHover={{ scale: 1.02 }}
+                              whileTap={{ scale: 0.98 }}
+                            >
+                              <Button
+                                variant="ghost"
+                                onClick={addFormField}
+                                className="w-full border border-dashed border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10"
+                              >
+                                <Plus className="h-4 w-4 mr-2" />
+                                Add Field
+                              </Button>
+                            </motion.div>
+
+                            <AnimatePresence>
+                              {formFields.length > 0 && (
+                                <motion.div
+                                  initial={{ opacity: 0, height: 0 }}
+                                  animate={{ opacity: 1, height: "auto" }}
+                                  exit={{ opacity: 0, height: 0 }}
+                                  className="p-4 rounded-lg border border-emerald-500/20 bg-[#0d1117]"
+                                >
+                                  <div className="flex items-center justify-between mb-3">
+                                    <span className="text-sm font-medium text-emerald-400">
+                                      Generated JSON
+                                    </span>
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      onClick={() => {
+                                        const json = generateJSONFromForm();
+                                        setJsonInput(json);
+                                        setOperation("insert");
+                                        setInputMethod("json");
+                                      }}
+                                      className="text-xs bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30"
+                                    >
+                                      Use for Insert
+                                    </Button>
+                                  </div>
+                                  <pre className="text-xs text-slate-300 font-mono bg-[#0a0e14] p-3 rounded border overflow-x-auto">
+                                    {generateJSONFromForm()}
+                                  </pre>
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
+                          </div>
+                        </TabsContent>
+                      </Tabs>
                     </CardContent>
                   </Card>
                 </motion.div>
@@ -971,7 +1337,10 @@ export default function Home() {
                             className="mb-4 rounded-lg border border-red-500/30 bg-red-500/10 p-4"
                           >
                             <div className="flex items-center gap-2 text-red-400">
-                              <motion.div animate={{ rotate: [0, 10, -10, 0] }} transition={{ duration: 0.5 }}>
+                              <motion.div
+                                animate={{ rotate: [0, 10, -10, 0] }}
+                                transition={{ duration: 0.5 }}
+                              >
                                 <X className="h-5 w-5" />
                               </motion.div>
                               <span className="font-medium">Error</span>
@@ -989,58 +1358,81 @@ export default function Home() {
                           >
                             {result.metrics && (
                               <div className="grid grid-cols-2 gap-3">
-                                <motion.div 
+                                <motion.div
                                   className="rounded-lg border border-emerald-500/20 bg-[#0d1117] p-3"
                                   initial={{ opacity: 0, scale: 0.8 }}
                                   animate={{ opacity: 1, scale: 1 }}
                                   transition={{ delay: 0.1 }}
-                                  whileHover={{ scale: 1.02, borderColor: "rgba(16, 185, 129, 0.4)" }}
+                                  whileHover={{
+                                    scale: 1.02,
+                                    borderColor: "rgba(16, 185, 129, 0.4)",
+                                  }}
                                 >
                                   <div className="flex items-center gap-2 text-xs text-slate-400">
                                     <Clock className="h-3 w-3" />
                                     Execution Time
                                   </div>
-                                  <motion.p 
+                                  <motion.p
                                     className="mt-1 font-mono text-lg text-emerald-400"
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
                                     transition={{ delay: 0.2 }}
                                   >
-                                    {(result.metrics as Record<string, unknown>).executionTime}ms
+                                    {
+                                      (
+                                        result.metrics as Record<
+                                          string,
+                                          unknown
+                                        >
+                                      ).executionTime
+                                    }
+                                    ms
                                   </motion.p>
                                 </motion.div>
-                                <motion.div 
+                                <motion.div
                                   className="rounded-lg border border-emerald-500/20 bg-[#0d1117] p-3"
                                   initial={{ opacity: 0, scale: 0.8 }}
                                   animate={{ opacity: 1, scale: 1 }}
                                   transition={{ delay: 0.2 }}
-                                  whileHover={{ scale: 1.02, borderColor: "rgba(16, 185, 129, 0.4)" }}
+                                  whileHover={{
+                                    scale: 1.02,
+                                    borderColor: "rgba(16, 185, 129, 0.4)",
+                                  }}
                                 >
                                   <div className="flex items-center gap-2 text-xs text-slate-400">
                                     <Zap className="h-3 w-3" />
                                     Operation
                                   </div>
                                   <p className="mt-1 font-mono text-lg text-emerald-400">
-                                    {(result.metrics as Record<string, unknown>).operation as string}
+                                    {
+                                      (
+                                        result.metrics as Record<
+                                          string,
+                                          unknown
+                                        >
+                                      ).operation as string
+                                    }
                                   </p>
                                 </motion.div>
                               </div>
                             )}
 
-                            <motion.div 
+                            <motion.div
                               className="rounded-lg border border-emerald-500/20 bg-[#0d1117] p-4"
                               initial={{ opacity: 0, y: 10 }}
                               animate={{ opacity: 1, y: 0 }}
                               transition={{ delay: 0.3 }}
                             >
-                              <div className="mb-2 text-xs text-slate-400">Response Data</div>
+                              <div className="mb-2 text-xs text-slate-400">
+                                Response Data
+                              </div>
                               <pre className="max-h-64 overflow-auto font-mono text-xs text-slate-300">
                                 {JSON.stringify(result.data, null, 2)}
                               </pre>
                             </motion.div>
 
                             {result.bsonConversion && (
-                              <motion.div 
+                              <motion.div
                                 className="rounded-lg border border-teal-500/20 bg-teal-500/5 p-4"
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
@@ -1051,13 +1443,17 @@ export default function Home() {
                                   BSON Conversion
                                 </div>
                                 <pre className="font-mono text-xs text-slate-300">
-                                  {JSON.stringify(result.bsonConversion, null, 2)}
+                                  {JSON.stringify(
+                                    result.bsonConversion,
+                                    null,
+                                    2,
+                                  )}
                                 </pre>
                               </motion.div>
                             )}
 
                             {result.queryPlan && (
-                              <motion.div 
+                              <motion.div
                                 className="rounded-lg border border-amber-500/20 bg-amber-500/5 p-4"
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
@@ -1076,7 +1472,7 @@ export default function Home() {
                         )}
 
                         {!result && !error && (
-                          <motion.div 
+                          <motion.div
                             key="empty"
                             className="flex h-64 items-center justify-center text-slate-500"
                             initial={{ opacity: 0 }}
@@ -1084,15 +1480,21 @@ export default function Home() {
                           >
                             <div className="text-center">
                               <motion.div
-                                animate={{ 
+                                animate={{
                                   rotateY: [0, 360],
-                                  scale: [1, 1.1, 1]
+                                  scale: [1, 1.1, 1],
                                 }}
-                                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                                transition={{
+                                  duration: 4,
+                                  repeat: Infinity,
+                                  ease: "easeInOut",
+                                }}
                               >
                                 <Database className="mx-auto h-12 w-12 opacity-20" />
                               </motion.div>
-                              <p className="mt-2">Execute an operation to see results</p>
+                              <p className="mt-2">
+                                Execute an operation to see results
+                              </p>
                             </div>
                           </motion.div>
                         )}
@@ -1135,7 +1537,10 @@ export default function Home() {
                           className="w-full pl-10 pr-4 py-3 rounded-lg border border-emerald-500/20 bg-[#0d1117] text-slate-100 focus:border-emerald-500/50 focus:outline-none focus:ring-2 focus:ring-emerald-500/30 transition-all"
                         />
                       </div>
-                      <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                      <motion.div
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
                         <Button
                           onClick={analyzeGitHubRepo}
                           disabled={isAnalyzing}
@@ -1176,10 +1581,32 @@ export default function Home() {
                         >
                           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                             {[
-                              { label: "Total Files", value: analysisResult.totalFiles, icon: <FileCode className="h-4 w-4" />, color: "emerald" },
-                              { label: "MongoDB Files", value: analysisResult.mongoFiles, icon: <Database className="h-4 w-4" />, color: "teal" },
-                              { label: "Collections", value: analysisResult.collections.length, icon: <Folder className="h-4 w-4" />, color: "cyan" },
-                              { label: "Operations", value: Object.values(analysisResult.operations).reduce((a, b) => a + b, 0), icon: <Activity className="h-4 w-4" />, color: "amber" },
+                              {
+                                label: "Total Files",
+                                value: analysisResult.totalFiles,
+                                icon: <FileCode className="h-4 w-4" />,
+                                color: "emerald",
+                              },
+                              {
+                                label: "MongoDB Files",
+                                value: analysisResult.mongoFiles,
+                                icon: <Database className="h-4 w-4" />,
+                                color: "teal",
+                              },
+                              {
+                                label: "Collections",
+                                value: analysisResult.collections.length,
+                                icon: <Folder className="h-4 w-4" />,
+                                color: "cyan",
+                              },
+                              {
+                                label: "Operations",
+                                value: Object.values(
+                                  analysisResult.operations,
+                                ).reduce((a, b) => a + b, 0),
+                                icon: <Activity className="h-4 w-4" />,
+                                color: "amber",
+                              },
                             ].map((stat, i) => (
                               <motion.div
                                 key={stat.label}
@@ -1193,7 +1620,7 @@ export default function Home() {
                                   {stat.icon}
                                   {stat.label}
                                 </div>
-                                <motion.p 
+                                <motion.p
                                   className="text-2xl font-mono text-emerald-400"
                                   initial={{ opacity: 0 }}
                                   animate={{ opacity: 1 }}
@@ -1212,36 +1639,80 @@ export default function Home() {
                             </h3>
                             <div className="relative py-8">
                               <div className="flex justify-between items-center">
-                                {analysisResult.flowDiagram.map((node, index) => (
-                                  <div key={node.id} className="flex items-center">
-                                    <motion.div
-                                      initial={{ opacity: 0, scale: 0.5, y: 20 }}
-                                      animate={{ opacity: 1, scale: 1, y: 0 }}
-                                      transition={{ delay: index * 0.15, type: "spring", stiffness: 200 }}
-                                      whileHover={{ scale: 1.1, y: -5 }}
-                                      onClick={() => setSelectedNode(selectedNode?.id === node.id ? null : node)}
-                                      className={`relative cursor-pointer rounded-xl p-5 bg-gradient-to-br ${getNodeColor(node.type)} shadow-lg transition-all`}
+                                {analysisResult.flowDiagram.map(
+                                  (node, index) => (
+                                    <div
+                                      key={node.id}
+                                      className="flex items-center"
                                     >
-                                      <PulseRing active={selectedNode?.id === node.id} />
-                                      <motion.div 
-                                        className="text-white mb-2 flex justify-center"
-                                        animate={selectedNode?.id === node.id ? { rotate: [0, 360] } : {}}
-                                        transition={{ duration: 1, repeat: selectedNode?.id === node.id ? Infinity : 0, ease: "linear" }}
+                                      <motion.div
+                                        initial={{
+                                          opacity: 0,
+                                          scale: 0.5,
+                                          y: 20,
+                                        }}
+                                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                                        transition={{
+                                          delay: index * 0.15,
+                                          type: "spring",
+                                          stiffness: 200,
+                                        }}
+                                        whileHover={{ scale: 1.1, y: -5 }}
+                                        onClick={() =>
+                                          setSelectedNode(
+                                            selectedNode?.id === node.id
+                                              ? null
+                                              : node,
+                                          )
+                                        }
+                                        className={`relative cursor-pointer rounded-xl p-5 bg-gradient-to-br ${getNodeColor(node.type)} shadow-lg transition-all`}
                                       >
-                                        {getNodeIcon(node.type)}
+                                        <PulseRing
+                                          active={selectedNode?.id === node.id}
+                                        />
+                                        <motion.div
+                                          className="text-white mb-2 flex justify-center"
+                                          animate={
+                                            selectedNode?.id === node.id
+                                              ? { rotate: [0, 360] }
+                                              : {}
+                                          }
+                                          transition={{
+                                            duration: 1,
+                                            repeat:
+                                              selectedNode?.id === node.id
+                                                ? Infinity
+                                                : 0,
+                                            ease: "linear",
+                                          }}
+                                        >
+                                          {getNodeIcon(node.type)}
+                                        </motion.div>
+                                        <p className="text-white text-sm font-medium text-center">
+                                          {node.label}
+                                        </p>
+                                        <p className="text-white/60 text-xs text-center mt-1 capitalize">
+                                          {node.type}
+                                        </p>
                                       </motion.div>
-                                      <p className="text-white text-sm font-medium text-center">{node.label}</p>
-                                      <p className="text-white/60 text-xs text-center mt-1 capitalize">{node.type}</p>
-                                    </motion.div>
-                                    {index < analysisResult.flowDiagram.length - 1 && (
-                                      <div className="relative w-12 md:w-20 h-1 mx-2 md:mx-4">
-                                        <div className="absolute inset-0 bg-slate-700/50 rounded-full" />
-                                        <DataPacket delay={index * 0.4} duration={1.5} />
-                                        <DataPacket delay={index * 0.4 + 0.5} duration={1.5} />
-                                      </div>
-                                    )}
-                                  </div>
-                                ))}
+                                      {index <
+                                        analysisResult.flowDiagram.length -
+                                          1 && (
+                                        <div className="relative w-12 md:w-20 h-1 mx-2 md:mx-4">
+                                          <div className="absolute inset-0 bg-slate-700/50 rounded-full" />
+                                          <DataPacket
+                                            delay={index * 0.4}
+                                            duration={1.5}
+                                          />
+                                          <DataPacket
+                                            delay={index * 0.4 + 0.5}
+                                            duration={1.5}
+                                          />
+                                        </div>
+                                      )}
+                                    </div>
+                                  ),
+                                )}
                               </div>
                             </div>
 
@@ -1275,8 +1746,8 @@ export default function Home() {
                                   )}
                                   <div className="flex flex-wrap gap-2">
                                     {selectedNode.operations.map((op, i) => (
-                                      <motion.span 
-                                        key={op} 
+                                      <motion.span
+                                        key={op}
                                         className="px-2 py-1 text-xs rounded bg-emerald-500/20 text-emerald-400"
                                         initial={{ opacity: 0, scale: 0.8 }}
                                         animate={{ opacity: 1, scale: 1 }}
@@ -1292,7 +1763,7 @@ export default function Home() {
                           </div>
 
                           <div className="grid md:grid-cols-2 gap-6">
-                            <motion.div 
+                            <motion.div
                               className="rounded-lg border border-emerald-500/20 bg-[#0d1117] p-4"
                               initial={{ opacity: 0, x: -20 }}
                               animate={{ opacity: 1, x: 0 }}
@@ -1303,31 +1774,43 @@ export default function Home() {
                                 Operation Distribution
                               </h4>
                               <div className="space-y-3">
-                                {Object.entries(analysisResult.operations).map(([op, count], i) => (
-                                  <motion.div
-                                    key={op}
-                                    initial={{ opacity: 0, x: -20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: 0.4 + i * 0.1 }}
-                                  >
-                                    <div className="flex justify-between text-sm mb-1">
-                                      <span className="text-slate-400 capitalize">{op}</span>
-                                      <span className="text-emerald-400 font-mono">{count}</span>
-                                    </div>
-                                    <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
-                                      <motion.div
-                                        initial={{ width: 0 }}
-                                        animate={{ width: `${(count / 15) * 100}%` }}
-                                        transition={{ delay: 0.5 + i * 0.1, duration: 0.8, ease: "easeOut" }}
-                                        className="h-full bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full"
-                                      />
-                                    </div>
-                                  </motion.div>
-                                ))}
+                                {Object.entries(analysisResult.operations).map(
+                                  ([op, count], i) => (
+                                    <motion.div
+                                      key={op}
+                                      initial={{ opacity: 0, x: -20 }}
+                                      animate={{ opacity: 1, x: 0 }}
+                                      transition={{ delay: 0.4 + i * 0.1 }}
+                                    >
+                                      <div className="flex justify-between text-sm mb-1">
+                                        <span className="text-slate-400 capitalize">
+                                          {op}
+                                        </span>
+                                        <span className="text-emerald-400 font-mono">
+                                          {count}
+                                        </span>
+                                      </div>
+                                      <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
+                                        <motion.div
+                                          initial={{ width: 0 }}
+                                          animate={{
+                                            width: `${(count / 15) * 100}%`,
+                                          }}
+                                          transition={{
+                                            delay: 0.5 + i * 0.1,
+                                            duration: 0.8,
+                                            ease: "easeOut",
+                                          }}
+                                          className="h-full bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full"
+                                        />
+                                      </div>
+                                    </motion.div>
+                                  ),
+                                )}
                               </div>
                             </motion.div>
 
-                            <motion.div 
+                            <motion.div
                               className="rounded-lg border border-emerald-500/20 bg-[#0d1117] p-4"
                               initial={{ opacity: 0, x: 20 }}
                               animate={{ opacity: 1, x: 0 }}
@@ -1357,24 +1840,37 @@ export default function Home() {
                                 MongoDB Files
                               </h4>
                               <div className="space-y-2 max-h-32 overflow-y-auto">
-                                {analysisResult.files.filter(f => f.mongoOperations && f.mongoOperations.length > 0).map((file, i) => (
-                                  <motion.div
-                                    key={file.path}
-                                    initial={{ opacity: 0, x: 10 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: 0.5 + i * 0.1 }}
-                                    className="flex items-center justify-between text-sm p-2 rounded bg-slate-800/50 hover:bg-slate-800 transition-colors"
-                                  >
-                                    <span className="text-slate-400 truncate">{file.name}</span>
-                                    <div className="flex gap-1">
-                                      {file.mongoOperations.slice(0, 2).map(op => (
-                                        <span key={op} className="px-1.5 py-0.5 text-xs rounded bg-emerald-500/20 text-emerald-400">
-                                          {op}
-                                        </span>
-                                      ))}
-                                    </div>
-                                  </motion.div>
-                                ))}
+                                {analysisResult.files
+                                  .filter(
+                                    (f) =>
+                                      f.mongoOperations &&
+                                      f.mongoOperations.length > 0,
+                                  )
+                                  .map((file, i) => (
+                                    <motion.div
+                                      key={file.path}
+                                      initial={{ opacity: 0, x: 10 }}
+                                      animate={{ opacity: 1, x: 0 }}
+                                      transition={{ delay: 0.5 + i * 0.1 }}
+                                      className="flex items-center justify-between text-sm p-2 rounded bg-slate-800/50 hover:bg-slate-800 transition-colors"
+                                    >
+                                      <span className="text-slate-400 truncate">
+                                        {file.name}
+                                      </span>
+                                      <div className="flex gap-1">
+                                        {file.mongoOperations
+                                          .slice(0, 2)
+                                          .map((op) => (
+                                            <span
+                                              key={op}
+                                              className="px-1.5 py-0.5 text-xs rounded bg-emerald-500/20 text-emerald-400"
+                                            >
+                                              {op}
+                                            </span>
+                                          ))}
+                                      </div>
+                                    </motion.div>
+                                  ))}
                               </div>
                             </motion.div>
                           </div>
@@ -1393,7 +1889,12 @@ export default function Home() {
                       <div className="flex items-center gap-4">
                         <div className="flex items-center gap-2">
                           <span className="text-xs text-slate-400">Speed:</span>
-                          <Select value={flowSpeed} onValueChange={(v) => setFlowSpeed(v as typeof flowSpeed)}>
+                          <Select
+                            value={flowSpeed}
+                            onValueChange={(v) =>
+                              setFlowSpeed(v as typeof flowSpeed)
+                            }
+                          >
                             <SelectTrigger className="w-24 h-8 text-xs border-emerald-500/30 bg-[#0d1117]">
                               <SelectValue />
                             </SelectTrigger>
@@ -1408,7 +1909,11 @@ export default function Home() {
                           variant="ghost"
                           size="sm"
                           onClick={() => setShowLiveMetrics(!showLiveMetrics)}
-                          className={showLiveMetrics ? "text-emerald-400" : "text-slate-400"}
+                          className={
+                            showLiveMetrics
+                              ? "text-emerald-400"
+                              : "text-slate-400"
+                          }
                         >
                           <Eye className="h-4 w-4 mr-1" />
                           Metrics
@@ -1426,10 +1931,26 @@ export default function Home() {
                           className="mb-6 grid grid-cols-4 gap-4"
                         >
                           {[
-                            { label: "Req/sec", value: liveMetrics.requestsPerSec.toFixed(1), icon: <Activity className="h-3 w-3" /> },
-                            { label: "Latency", value: `${liveMetrics.avgLatency.toFixed(0)}ms`, icon: <Timer className="h-3 w-3" /> },
-                            { label: "Connections", value: liveMetrics.activeConnections, icon: <GitBranch className="h-3 w-3" /> },
-                            { label: "Data", value: `${(liveMetrics.dataTransferred / 1024).toFixed(1)}KB`, icon: <HardDrive className="h-3 w-3" /> },
+                            {
+                              label: "Req/sec",
+                              value: liveMetrics.requestsPerSec.toFixed(1),
+                              icon: <Activity className="h-3 w-3" />,
+                            },
+                            {
+                              label: "Latency",
+                              value: `${liveMetrics.avgLatency.toFixed(0)}ms`,
+                              icon: <Timer className="h-3 w-3" />,
+                            },
+                            {
+                              label: "Connections",
+                              value: liveMetrics.activeConnections,
+                              icon: <GitBranch className="h-3 w-3" />,
+                            },
+                            {
+                              label: "Data",
+                              value: `${(liveMetrics.dataTransferred / 1024).toFixed(1)}KB`,
+                              icon: <HardDrive className="h-3 w-3" />,
+                            },
                           ].map((metric, i) => (
                             <motion.div
                               key={metric.label}
@@ -1442,7 +1963,7 @@ export default function Home() {
                                 {metric.icon}
                                 {metric.label}
                               </div>
-                              <motion.p 
+                              <motion.p
                                 className="font-mono text-lg text-cyan-300"
                                 key={metric.value}
                                 initial={{ scale: 1.1 }}
@@ -1464,10 +1985,10 @@ export default function Home() {
                               step.status === "idle"
                                 ? "border-slate-700 bg-[#0d1117]"
                                 : step.status === "active"
-                                ? "border-emerald-500 bg-emerald-500/10 shadow-lg shadow-emerald-500/20"
-                                : step.status === "completed"
-                                ? "border-emerald-500 bg-emerald-500/20"
-                                : "border-red-500 bg-red-500/10"
+                                  ? "border-emerald-500 bg-emerald-500/10 shadow-lg shadow-emerald-500/20"
+                                  : step.status === "completed"
+                                    ? "border-emerald-500 bg-emerald-500/20"
+                                    : "border-red-500 bg-red-500/10"
                             }`}
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -1480,11 +2001,17 @@ export default function Home() {
                                 step.status === "idle"
                                   ? "text-slate-500"
                                   : step.status === "error"
-                                  ? "text-red-400"
-                                  : "text-emerald-400"
+                                    ? "text-red-400"
+                                    : "text-emerald-400"
                               }`}
-                              animate={step.status === "active" ? { rotate: 360 } : {}}
-                              transition={{ duration: 1, repeat: step.status === "active" ? Infinity : 0, ease: "linear" }}
+                              animate={
+                                step.status === "active" ? { rotate: 360 } : {}
+                              }
+                              transition={{
+                                duration: 1,
+                                repeat: step.status === "active" ? Infinity : 0,
+                                ease: "linear",
+                              }}
                             >
                               {step.status === "active" ? (
                                 <Loader2 className="h-6 w-6" />
@@ -1492,7 +2019,10 @@ export default function Home() {
                                 <motion.div
                                   initial={{ scale: 0 }}
                                   animate={{ scale: 1 }}
-                                  transition={{ type: "spring", stiffness: 500 }}
+                                  transition={{
+                                    type: "spring",
+                                    stiffness: 500,
+                                  }}
                                 >
                                   <Check className="h-6 w-6" />
                                 </motion.div>
@@ -1508,15 +2038,15 @@ export default function Home() {
                                   step.status === "idle"
                                     ? "text-slate-400"
                                     : step.status === "error"
-                                    ? "text-red-400"
-                                    : "text-emerald-400"
+                                      ? "text-red-400"
+                                      : "text-emerald-400"
                                 }`}
                               >
                                 {step.label}
                               </p>
                               <AnimatePresence mode="wait">
                                 {step.details && (
-                                  <motion.p 
+                                  <motion.p
                                     key={step.details}
                                     initial={{ opacity: 0, y: -5 }}
                                     animate={{ opacity: 1, y: 0 }}
@@ -1532,7 +2062,8 @@ export default function Home() {
                           {index < flowSteps.length - 1 && (
                             <div className="relative hidden lg:block w-8">
                               <ChevronRight className="h-6 w-6 text-slate-600" />
-                              {(step.status === "completed" || step.status === "active") && (
+                              {(step.status === "completed" ||
+                                step.status === "active") && (
                                 <motion.div
                                   className="absolute inset-0 flex items-center justify-center"
                                   initial={{ opacity: 0, x: -10 }}
@@ -1549,7 +2080,7 @@ export default function Home() {
                     </div>
 
                     <div className="mt-8 grid gap-4 lg:grid-cols-2">
-                      <motion.div 
+                      <motion.div
                         className="rounded-lg border border-emerald-500/20 bg-[#0d1117] p-4"
                         whileHover={{ borderColor: "rgba(16, 185, 129, 0.4)" }}
                       >
@@ -1561,7 +2092,7 @@ export default function Home() {
                           {jsonInput}
                         </pre>
                       </motion.div>
-                      <motion.div 
+                      <motion.div
                         className="rounded-lg border border-emerald-500/20 bg-[#0d1117] p-4"
                         whileHover={{ borderColor: "rgba(16, 185, 129, 0.4)" }}
                       >
@@ -1570,27 +2101,37 @@ export default function Home() {
                         </h3>
                         <ul className="space-y-2 text-sm text-slate-400">
                           <li className="flex items-center gap-2">
-                            <motion.span 
+                            <motion.span
                               className="h-1.5 w-1.5 rounded-full bg-emerald-500"
                               animate={{ scale: [1, 1.5, 1] }}
                               transition={{ duration: 2, repeat: Infinity }}
                             />
-                            API Endpoint: <code className="text-emerald-300">/api/{operation}</code>
+                            API Endpoint:{" "}
+                            <code className="text-emerald-300">
+                              /api/{operation}
+                            </code>
                           </li>
                           <li className="flex items-center gap-2">
                             <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                            Method: <code className="text-emerald-300">POST</code>
+                            Method:{" "}
+                            <code className="text-emerald-300">POST</code>
                           </li>
                           <li className="flex items-center gap-2">
                             <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                            Collection: <code className="text-emerald-300">demo_collection</code>
+                            Collection:{" "}
+                            <code className="text-emerald-300">
+                              demo_collection
+                            </code>
                           </li>
                         </ul>
                       </motion.div>
                     </div>
 
                     <div className="mt-6 flex justify-center">
-                      <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                      <motion.div
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
                         <Button
                           onClick={executeOperation}
                           disabled={isLoading}
@@ -1617,12 +2158,12 @@ export default function Home() {
             </TabsContent>
 
             <TabsContent value="learning" className="space-y-6">
-              <motion.div 
+              <motion.div
                 className="grid gap-6 lg:grid-cols-12"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
               >
-                <motion.div 
+                <motion.div
                   className="lg:col-span-4"
                   initial={{ opacity: 0, x: -30 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -1635,7 +2176,7 @@ export default function Home() {
                           <BookOpen className="h-5 w-5" />
                           Lessons
                         </CardTitle>
-                        <motion.div 
+                        <motion.div
                           className="flex items-center gap-2"
                           whileHover={{ scale: 1.05 }}
                         >
@@ -1655,11 +2196,15 @@ export default function Home() {
                           />
                           <motion.div
                             className="absolute inset-y-0 left-0 bg-gradient-to-r from-emerald-400/50 to-transparent rounded-full"
-                            animate={{ 
+                            animate={{
                               x: ["0%", "100%"],
-                              opacity: [0, 1, 0]
+                              opacity: [0, 1, 0],
                             }}
-                            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                            transition={{
+                              duration: 2,
+                              repeat: Infinity,
+                              ease: "easeInOut",
+                            }}
                             style={{ width: "30%" }}
                           />
                         </div>
@@ -1671,9 +2216,21 @@ export default function Home() {
                     <CardContent className="pt-4 max-h-[60vh] overflow-y-auto">
                       <div className="space-y-4">
                         {[
-                          { title: "Beginner", lessons: beginnerLessons, color: "emerald" },
-                          { title: "Intermediate", lessons: intermediateLessons, color: "amber" },
-                          { title: "Advanced", lessons: advancedLessons, color: "rose" },
+                          {
+                            title: "Beginner",
+                            lessons: beginnerLessons,
+                            color: "emerald",
+                          },
+                          {
+                            title: "Intermediate",
+                            lessons: intermediateLessons,
+                            color: "amber",
+                          },
+                          {
+                            title: "Advanced",
+                            lessons: advancedLessons,
+                            color: "rose",
+                          },
                         ].map((section, sectionIndex) => (
                           <motion.div
                             key={section.title}
@@ -1681,7 +2238,9 @@ export default function Home() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: sectionIndex * 0.1 }}
                           >
-                            <h4 className={`text-xs font-semibold uppercase tracking-wider text-${section.color}-400 mb-2`}>
+                            <h4
+                              className={`text-xs font-semibold uppercase tracking-wider text-${section.color}-400 mb-2`}
+                            >
                               {section.title}
                             </h4>
                             <div className="space-y-1">
@@ -1691,8 +2250,14 @@ export default function Home() {
                                   onClick={() => loadLesson(lesson)}
                                   initial={{ opacity: 0, x: -20 }}
                                   animate={{ opacity: 1, x: 0 }}
-                                  transition={{ delay: sectionIndex * 0.1 + lessonIndex * 0.05 }}
-                                  whileHover={{ x: 4, backgroundColor: "rgba(30, 41, 59, 0.8)" }}
+                                  transition={{
+                                    delay:
+                                      sectionIndex * 0.1 + lessonIndex * 0.05,
+                                  }}
+                                  whileHover={{
+                                    x: 4,
+                                    backgroundColor: "rgba(30, 41, 59, 0.8)",
+                                  }}
                                   className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-left text-sm transition-all ${
                                     selectedLesson?.id === lesson.id
                                       ? `bg-${section.color}-500/20 text-${section.color}-400`
@@ -1700,16 +2265,24 @@ export default function Home() {
                                   }`}
                                 >
                                   <motion.div
-                                    animate={completedLessons.has(lesson.id) ? { scale: [1, 1.2, 1] } : {}}
+                                    animate={
+                                      completedLessons.has(lesson.id)
+                                        ? { scale: [1, 1.2, 1] }
+                                        : {}
+                                    }
                                     transition={{ duration: 0.3 }}
                                   >
                                     {completedLessons.has(lesson.id) ? (
-                                      <CheckCircle2 className={`h-4 w-4 text-${section.color}-400 flex-shrink-0`} />
+                                      <CheckCircle2
+                                        className={`h-4 w-4 text-${section.color}-400 flex-shrink-0`}
+                                      />
                                     ) : (
                                       <Circle className="h-4 w-4 text-slate-600 flex-shrink-0" />
                                     )}
                                   </motion.div>
-                                  <span className="truncate">{lesson.title}</span>
+                                  <span className="truncate">
+                                    {lesson.title}
+                                  </span>
                                 </motion.button>
                               ))}
                             </div>
@@ -1720,7 +2293,7 @@ export default function Home() {
                   </Card>
                 </motion.div>
 
-                <motion.div 
+                <motion.div
                   className="lg:col-span-8 space-y-6"
                   initial={{ opacity: 0, x: 30 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -1742,17 +2315,17 @@ export default function Home() {
                               transition={{ duration: 4, repeat: Infinity }}
                             />
                             <div className="text-center relative">
-                              <motion.div 
+                              <motion.div
                                 className="mx-auto w-20 h-20 rounded-full bg-gradient-to-br from-emerald-500/20 to-teal-500/20 flex items-center justify-center mb-6"
-                                animate={{ 
+                                animate={{
                                   scale: [1, 1.1, 1],
-                                  rotate: [0, 5, -5, 0]
+                                  rotate: [0, 5, -5, 0],
                                 }}
                                 transition={{ duration: 4, repeat: Infinity }}
                               >
                                 <GraduationCap className="h-10 w-10 text-emerald-400" />
                               </motion.div>
-                              <motion.h2 
+                              <motion.h2
                                 className="text-2xl font-semibold text-emerald-400 mb-3"
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
@@ -1760,14 +2333,15 @@ export default function Home() {
                               >
                                 Welcome to MongoDB Learning
                               </motion.h2>
-                              <motion.p 
+                              <motion.p
                                 className="text-slate-400 max-w-md mx-auto mb-8"
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.3 }}
                               >
-                                Select a lesson from the sidebar to start learning MongoDB operations
-                                through interactive, hands-on tutorials.
+                                Select a lesson from the sidebar to start
+                                learning MongoDB operations through interactive,
+                                hands-on tutorials.
                               </motion.p>
                               <motion.div
                                 initial={{ opacity: 0, y: 10 }}
@@ -1800,16 +2374,18 @@ export default function Home() {
                           <CardHeader className="border-b border-emerald-500/10">
                             <div className="flex items-center justify-between">
                               <div>
-                                <motion.div 
+                                <motion.div
                                   className="flex items-center gap-2 mb-1"
                                   initial={{ opacity: 0, x: -10 }}
                                   animate={{ opacity: 1, x: 0 }}
                                 >
-                                  <span className={`text-xs px-2 py-0.5 rounded-full border ${CATEGORY_COLORS[selectedLesson.category]}`}>
+                                  <span
+                                    className={`text-xs px-2 py-0.5 rounded-full border ${CATEGORY_COLORS[selectedLesson.category]}`}
+                                  >
                                     {selectedLesson.category}
                                   </span>
                                   {completedLessons.has(selectedLesson.id) && (
-                                    <motion.span 
+                                    <motion.span
                                       className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
                                       initial={{ scale: 0 }}
                                       animate={{ scale: 1 }}
@@ -1823,7 +2399,10 @@ export default function Home() {
                                   {selectedLesson.title}
                                 </CardTitle>
                               </div>
-                              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                              <motion.div
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                              >
                                 <Button
                                   variant="outline"
                                   size="sm"
@@ -1837,7 +2416,7 @@ export default function Home() {
                             </div>
                           </CardHeader>
                           <CardContent className="pt-6 space-y-6">
-                            <motion.div 
+                            <motion.div
                               className="flex items-start gap-3 p-4 rounded-lg bg-emerald-500/5 border border-emerald-500/20"
                               initial={{ opacity: 0, y: 10 }}
                               animate={{ opacity: 1, y: 0 }}
@@ -1845,8 +2424,12 @@ export default function Home() {
                             >
                               <Target className="h-5 w-5 text-emerald-400 mt-0.5 flex-shrink-0" />
                               <div>
-                                <h4 className="text-sm font-medium text-emerald-400 mb-1">Learning Objective</h4>
-                                <p className="text-sm text-slate-300">{selectedLesson.objective}</p>
+                                <h4 className="text-sm font-medium text-emerald-400 mb-1">
+                                  Learning Objective
+                                </h4>
+                                <p className="text-sm text-slate-300">
+                                  {selectedLesson.objective}
+                                </p>
                               </div>
                             </motion.div>
 
@@ -1855,7 +2438,9 @@ export default function Home() {
                               animate={{ opacity: 1, y: 0 }}
                               transition={{ delay: 0.2 }}
                             >
-                              <h4 className="text-sm font-medium text-slate-300 mb-2">Explanation</h4>
+                              <h4 className="text-sm font-medium text-slate-300 mb-2">
+                                Explanation
+                              </h4>
                               <p className="text-sm text-slate-400 leading-relaxed">
                                 {selectedLesson.explanation}
                               </p>
@@ -1867,19 +2452,25 @@ export default function Home() {
                               transition={{ delay: 0.3 }}
                             >
                               <div className="flex items-center justify-between mb-2">
-                                <h4 className="text-sm font-medium text-slate-300">Sample Data / Query</h4>
+                                <h4 className="text-sm font-medium text-slate-300">
+                                  Sample Data / Query
+                                </h4>
                                 <span className="text-xs px-2 py-0.5 rounded bg-slate-800 text-slate-400">
                                   {selectedLesson.operation.toUpperCase()}
                                 </span>
                               </div>
                               <div className="rounded-lg border border-emerald-500/20 bg-[#0d1117] p-4 overflow-hidden">
                                 <pre className="font-mono text-sm text-emerald-300 overflow-x-auto">
-                                  {JSON.stringify(selectedLesson.sampleData, null, 2)}
+                                  {JSON.stringify(
+                                    selectedLesson.sampleData,
+                                    null,
+                                    2,
+                                  )}
                                 </pre>
                               </div>
                             </motion.div>
 
-                            <motion.div 
+                            <motion.div
                               className="flex items-start gap-3 p-4 rounded-lg bg-amber-500/5 border border-amber-500/20"
                               initial={{ opacity: 0, y: 10 }}
                               animate={{ opacity: 1, y: 0 }}
@@ -1887,8 +2478,12 @@ export default function Home() {
                             >
                               <Lightbulb className="h-5 w-5 text-amber-400 mt-0.5 flex-shrink-0" />
                               <div>
-                                <h4 className="text-sm font-medium text-amber-400 mb-1">Expected Result</h4>
-                                <p className="text-sm text-slate-300">{selectedLesson.expectedResult}</p>
+                                <h4 className="text-sm font-medium text-amber-400 mb-1">
+                                  Expected Result
+                                </h4>
+                                <p className="text-sm text-slate-300">
+                                  {selectedLesson.expectedResult}
+                                </p>
                               </div>
                             </motion.div>
 
@@ -1919,14 +2514,16 @@ export default function Home() {
                                   >
                                     <ul className="mt-3 space-y-2 pl-6">
                                       {selectedLesson.tips.map((tip, i) => (
-                                        <motion.li 
-                                          key={i} 
+                                        <motion.li
+                                          key={i}
                                           className="text-sm text-slate-400 flex items-start gap-2"
                                           initial={{ opacity: 0, x: -10 }}
                                           animate={{ opacity: 1, x: 0 }}
                                           transition={{ delay: i * 0.1 }}
                                         >
-                                          <span className="text-teal-400 mt-1">•</span>
+                                          <span className="text-teal-400 mt-1">
+                                            •
+                                          </span>
                                           {tip}
                                         </motion.li>
                                       ))}
@@ -1953,7 +2550,10 @@ export default function Home() {
                               />
                             </div>
                             <div className="flex gap-3">
-                              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                              <motion.div
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                              >
                                 <Button
                                   onClick={() => loadLesson(selectedLesson)}
                                   variant="outline"
@@ -1963,7 +2563,11 @@ export default function Home() {
                                   Reset
                                 </Button>
                               </motion.div>
-                              <motion.div className="flex-1" whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}>
+                              <motion.div
+                                className="flex-1"
+                                whileHover={{ scale: 1.01 }}
+                                whileTap={{ scale: 0.99 }}
+                              >
                                 <Button
                                   onClick={executeOperation}
                                   disabled={isLoading}
@@ -1997,7 +2601,9 @@ export default function Home() {
                                     <X className="h-5 w-5" />
                                     <span className="font-medium">Error</span>
                                   </div>
-                                  <p className="mt-1 text-sm text-red-300">{error}</p>
+                                  <p className="mt-1 text-sm text-red-300">
+                                    {error}
+                                  </p>
                                 </motion.div>
                               )}
 
@@ -2008,16 +2614,22 @@ export default function Home() {
                                   animate={{ opacity: 1, y: 0 }}
                                   className="mt-4 space-y-4"
                                 >
-                                  <motion.div 
+                                  <motion.div
                                     className="flex items-center gap-2 p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30"
                                     initial={{ scale: 0.95 }}
                                     animate={{ scale: 1 }}
-                                    transition={{ type: "spring", stiffness: 200 }}
+                                    transition={{
+                                      type: "spring",
+                                      stiffness: 200,
+                                    }}
                                   >
                                     <motion.div
                                       initial={{ scale: 0 }}
                                       animate={{ scale: 1 }}
-                                      transition={{ type: "spring", delay: 0.2 }}
+                                      transition={{
+                                        type: "spring",
+                                        delay: 0.2,
+                                      }}
                                     >
                                       <CheckCircle2 className="h-5 w-5 text-emerald-400" />
                                     </motion.div>
@@ -2028,7 +2640,7 @@ export default function Home() {
 
                                   {result.metrics && (
                                     <div className="grid grid-cols-2 gap-3">
-                                      <motion.div 
+                                      <motion.div
                                         className="rounded-lg border border-emerald-500/20 bg-[#0d1117] p-3"
                                         initial={{ opacity: 0, x: -10 }}
                                         animate={{ opacity: 1, x: 0 }}
@@ -2039,10 +2651,18 @@ export default function Home() {
                                           Execution Time
                                         </div>
                                         <p className="mt-1 font-mono text-lg text-emerald-400">
-                                          {(result.metrics as Record<string, unknown>).executionTime}ms
+                                          {
+                                            (
+                                              result.metrics as Record<
+                                                string,
+                                                unknown
+                                              >
+                                            ).executionTime
+                                          }
+                                          ms
                                         </p>
                                       </motion.div>
-                                      <motion.div 
+                                      <motion.div
                                         className="rounded-lg border border-emerald-500/20 bg-[#0d1117] p-3"
                                         initial={{ opacity: 0, x: 10 }}
                                         animate={{ opacity: 1, x: 0 }}
@@ -2053,19 +2673,28 @@ export default function Home() {
                                           Operation
                                         </div>
                                         <p className="mt-1 font-mono text-lg text-emerald-400">
-                                          {(result.metrics as Record<string, unknown>).operation as string}
+                                          {
+                                            (
+                                              result.metrics as Record<
+                                                string,
+                                                unknown
+                                              >
+                                            ).operation as string
+                                          }
                                         </p>
                                       </motion.div>
                                     </div>
                                   )}
 
-                                  <motion.div 
+                                  <motion.div
                                     className="rounded-lg border border-emerald-500/20 bg-[#0d1117] p-4"
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: 0.3 }}
                                   >
-                                    <div className="mb-2 text-xs text-slate-400">Response Data</div>
+                                    <div className="mb-2 text-xs text-slate-400">
+                                      Response Data
+                                    </div>
                                     <pre className="max-h-48 overflow-auto font-mono text-xs text-slate-300">
                                       {JSON.stringify(result.data, null, 2)}
                                     </pre>
@@ -2081,7 +2710,11 @@ export default function Home() {
                                     >
                                       <Button
                                         onClick={() => {
-                                          const next = LESSONS.find(l => l.id === selectedLesson.nextLesson);
+                                          const next = LESSONS.find(
+                                            (l) =>
+                                              l.id ===
+                                              selectedLesson.nextLesson,
+                                          );
                                           if (next) loadLesson(next);
                                         }}
                                         className="w-full bg-gradient-to-r from-teal-500 to-cyan-600 text-white shadow-lg shadow-teal-500/25"
@@ -2104,7 +2737,7 @@ export default function Home() {
             </TabsContent>
 
             <TabsContent value="monitoring" className="space-y-6">
-              <motion.div 
+              <motion.div
                 className="grid gap-6 lg:grid-cols-12"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -2129,16 +2762,26 @@ export default function Home() {
                             <table className="w-full text-sm text-left">
                               <thead className="text-xs uppercase bg-slate-800/50 text-slate-400">
                                 <tr>
-                                  <th className="px-4 py-3 font-medium">Time</th>
-                                  <th className="px-4 py-3 font-medium">Operation</th>
-                                  <th className="px-4 py-3 font-medium">Latency</th>
-                                  <th className="px-4 py-3 font-medium">Examined</th>
-                                  <th className="px-4 py-3 font-medium">Index</th>
+                                  <th className="px-4 py-3 font-medium">
+                                    Time
+                                  </th>
+                                  <th className="px-4 py-3 font-medium">
+                                    Operation
+                                  </th>
+                                  <th className="px-4 py-3 font-medium">
+                                    Latency
+                                  </th>
+                                  <th className="px-4 py-3 font-medium">
+                                    Examined
+                                  </th>
+                                  <th className="px-4 py-3 font-medium">
+                                    Index
+                                  </th>
                                 </tr>
                               </thead>
                               <tbody className="divide-y divide-slate-800">
                                 {performanceLog.map((entry, i) => (
-                                  <motion.tr 
+                                  <motion.tr
                                     key={entry.timestamp}
                                     initial={{ opacity: 0, x: -10 }}
                                     animate={{ opacity: 1, x: 0 }}
@@ -2146,22 +2789,33 @@ export default function Home() {
                                     className="hover:bg-slate-800/30 transition-colors"
                                   >
                                     <td className="px-4 py-3 text-slate-500 font-mono">
-                                      {new Date(entry.timestamp).toLocaleTimeString([], { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                                      {new Date(
+                                        entry.timestamp,
+                                      ).toLocaleTimeString([], {
+                                        hour12: false,
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                        second: "2-digit",
+                                      })}
                                     </td>
                                     <td className="px-4 py-3 font-medium text-emerald-400 capitalize">
                                       {entry.operation}
                                     </td>
                                     <td className="px-4 py-3">
-                                      <span className={`font-mono ${entry.executionTime > 50 ? 'text-amber-400' : 'text-emerald-400'}`}>
+                                      <span
+                                        className={`font-mono ${entry.executionTime > 50 ? "text-amber-400" : "text-emerald-400"}`}
+                                      >
                                         {entry.executionTime}ms
                                       </span>
                                     </td>
                                     <td className="px-4 py-3 text-slate-400 font-mono">
-                                      {entry.documentsExamined ?? '-'}
+                                      {entry.documentsExamined ?? "-"}
                                     </td>
                                     <td className="px-4 py-3">
-                                      <span className={`px-2 py-0.5 rounded text-[10px] uppercase font-bold ${entry.indexUsed === 'COLLSCAN' ? 'bg-red-500/10 text-red-400 border border-red-500/20' : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'}`}>
-                                        {entry.indexUsed || 'N/A'}
+                                      <span
+                                        className={`px-2 py-0.5 rounded text-[10px] uppercase font-bold ${entry.indexUsed === "COLLSCAN" ? "bg-red-500/10 text-red-400 border border-red-500/20" : "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"}`}
+                                      >
+                                        {entry.indexUsed || "N/A"}
                                       </span>
                                     </td>
                                   </motion.tr>
@@ -2187,26 +2841,54 @@ export default function Home() {
                           <div className="space-y-6">
                             <div>
                               <div className="flex justify-between text-sm mb-2">
-                                <span className="text-slate-400">Document Count</span>
-                                <span className="text-emerald-400 font-mono">{collStats.documentCount}</span>
+                                <span className="text-slate-400">
+                                  Document Count
+                                </span>
+                                <span className="text-emerald-400 font-mono">
+                                  {collStats.documentCount}
+                                </span>
                               </div>
-                              <Progress value={Math.min((collStats.documentCount / 1000) * 100, 100)} className="h-2 bg-slate-800" />
+                              <Progress
+                                value={Math.min(
+                                  (collStats.documentCount / 1000) * 100,
+                                  100,
+                                )}
+                                className="h-2 bg-slate-800"
+                              />
                             </div>
                             <div>
                               <div className="flex justify-between text-sm mb-2">
-                                <span className="text-slate-400">Storage Size</span>
-                                <span className="text-emerald-400 font-mono">{(collStats.storageSize / 1024).toFixed(2)} KB</span>
+                                <span className="text-slate-400">
+                                  Storage Size
+                                </span>
+                                <span className="text-emerald-400 font-mono">
+                                  {(collStats.storageSize / 1024).toFixed(2)} KB
+                                </span>
                               </div>
-                              <Progress value={Math.min((collStats.storageSize / (1024 * 100)) * 100, 100)} className="h-2 bg-slate-800" />
+                              <Progress
+                                value={Math.min(
+                                  (collStats.storageSize / (1024 * 100)) * 100,
+                                  100,
+                                )}
+                                className="h-2 bg-slate-800"
+                              />
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                               <div className="p-4 rounded-lg bg-[#0d1117] border border-emerald-500/10">
-                                <p className="text-xs text-slate-500 mb-1">Avg Obj Size</p>
-                                <p className="text-lg font-mono text-emerald-400">{collStats.avgObjSize} B</p>
+                                <p className="text-xs text-slate-500 mb-1">
+                                  Avg Obj Size
+                                </p>
+                                <p className="text-lg font-mono text-emerald-400">
+                                  {collStats.avgObjSize} B
+                                </p>
                               </div>
                               <div className="p-4 rounded-lg bg-[#0d1117] border border-emerald-500/10">
-                                <p className="text-xs text-slate-500 mb-1">Index Count</p>
-                                <p className="text-lg font-mono text-emerald-400">{collStats.indexCount}</p>
+                                <p className="text-xs text-slate-500 mb-1">
+                                  Index Count
+                                </p>
+                                <p className="text-lg font-mono text-emerald-400">
+                                  {collStats.indexCount}
+                                </p>
                               </div>
                             </div>
                           </div>
@@ -2217,7 +2899,7 @@ export default function Home() {
                             </h4>
                             <div className="space-y-3">
                               {collStats.indexes.map((idx, i) => (
-                                <motion.div 
+                                <motion.div
                                   key={idx.name}
                                   initial={{ opacity: 0, x: 10 }}
                                   animate={{ opacity: 1, x: 0 }}
@@ -2225,9 +2907,14 @@ export default function Home() {
                                   className="flex items-center justify-between p-2 rounded bg-slate-800/50"
                                 >
                                   <div>
-                                    <p className="text-sm font-medium text-slate-300">{idx.name}</p>
+                                    <p className="text-sm font-medium text-slate-300">
+                                      {idx.name}
+                                    </p>
                                     <p className="text-[10px] text-slate-500 font-mono">
-                                      {JSON.stringify(idx.key).replace(/["{}]/g, '')}
+                                      {JSON.stringify(idx.key).replace(
+                                        /["{}]/g,
+                                        "",
+                                      )}
                                     </p>
                                   </div>
                                   {idx.unique && (
@@ -2252,25 +2939,36 @@ export default function Home() {
                 <div className="lg:col-span-4 space-y-6">
                   <Card className="border-emerald-500/20 bg-[#161b22]/80 backdrop-blur-sm">
                     <CardHeader className="border-b border-emerald-500/10">
-                      <CardTitle className="text-lg text-emerald-400">Performance Insights</CardTitle>
+                      <CardTitle className="text-lg text-emerald-400">
+                        Performance Insights
+                      </CardTitle>
                     </CardHeader>
                     <CardContent className="pt-6 space-y-6">
                       <div className="p-4 rounded-lg bg-emerald-500/5 border border-emerald-500/20">
                         <div className="flex items-center gap-2 text-emerald-400 mb-2">
                           <Zap className="h-4 w-4" />
-                          <span className="text-sm font-medium">Health Status</span>
+                          <span className="text-sm font-medium">
+                            Health Status
+                          </span>
                         </div>
                         <p className="text-xs text-slate-400 leading-relaxed">
-                          Your database is currently performing optimally. {performanceLog.filter(l => l.indexUsed === 'COLLSCAN').length > 0 ? "Some queries are using COLLSCAN which might be slow on larger datasets." : "No collection scans detected in recent queries."}
+                          Your database is currently performing optimally.{" "}
+                          {performanceLog.filter(
+                            (l) => l.indexUsed === "COLLSCAN",
+                          ).length > 0
+                            ? "Some queries are using COLLSCAN which might be slow on larger datasets."
+                            : "No collection scans detected in recent queries."}
                         </p>
                       </div>
 
                       <div className="space-y-4">
-                        <h4 className="text-sm font-medium text-slate-300">Quick Actions</h4>
+                        <h4 className="text-sm font-medium text-slate-300">
+                          Quick Actions
+                        </h4>
                         <div className="grid gap-2">
-                          <Button 
-                            variant="outline" 
-                            size="sm" 
+                          <Button
+                            variant="outline"
+                            size="sm"
                             className="w-full justify-start border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/10"
                             onClick={() => {
                               setOperation("find");
@@ -2281,9 +2979,9 @@ export default function Home() {
                             <Search className="h-4 w-4 mr-2" />
                             Test Query Performance
                           </Button>
-                          <Button 
-                            variant="outline" 
-                            size="sm" 
+                          <Button
+                            variant="outline"
+                            size="sm"
                             className="w-full justify-start border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/10"
                             onClick={() => {
                               setOperation("aggregate");
