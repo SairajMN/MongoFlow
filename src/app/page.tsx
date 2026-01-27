@@ -664,7 +664,7 @@ const SAMPLE_DATA = {
 
 const PLACEHOLDERS: Record<Operation, string> = {
   insert: JSON.stringify(
-    { name: "John Doe", email: "john@example.com", age: 30 },
+    { name: "John Doe", email: "john@example.com", age: 30, id: "49u39" },
     null,
     2,
   ),
@@ -1350,9 +1350,7 @@ export default function Home() {
                         </CardTitle>
                         <Tabs
                           value={inputMethod}
-                          onValueChange={(value: "json" | "ui") =>
-                            setInputMethod(value)
-                          }
+                          onValueChange={(value) => setInputMethod(value)}
                           className="w-auto"
                         >
                           <TabsList className="bg-[#0d1117]/80 backdrop-blur-sm border border-emerald-500/20">
