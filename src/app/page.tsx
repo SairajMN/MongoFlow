@@ -1350,7 +1350,9 @@ export default function Home() {
                         </CardTitle>
                         <Tabs
                           value={inputMethod}
-                          onValueChange={(value) => setInputMethod(value)}
+                          onValueChange={(value: "json" | "ui") =>
+                            setInputMethod(value)
+                          }
                           className="w-auto"
                         >
                           <TabsList className="bg-[#0d1117]/80 backdrop-blur-sm border border-emerald-500/20">
