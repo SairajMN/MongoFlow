@@ -753,26 +753,37 @@ const PulseRing = ({ active }: { active: boolean }) => (
   </AnimatePresence>
 );
 
-const FloatingParticle = ({ delay }: { delay: number }) => (
-  <motion.div
-    className="absolute h-1 w-1 rounded-full bg-emerald-400/60"
-    initial={{
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      opacity: 0,
-    }}
-    animate={{
-      y: [null, -20, 0],
-      opacity: [0, 1, 0],
-    }}
-    transition={{
-      duration: 3,
-      delay,
-      repeat: Infinity,
-      repeatDelay: Math.random() * 2,
-    }}
-  />
-);
+const seededRandom = (seed: number) => {
+  const value = Math.sin(seed) * 10000;
+  return value - Math.floor(value);
+};
+
+const FloatingParticle = ({ delay, seed }: { delay: number; seed: number }) => {
+  const x = seededRandom(seed + 1) * 100;
+  const y = seededRandom(seed + 2) * 100;
+  const repeatDelay = seededRandom(seed + 3) * 2;
+
+  return (
+    <motion.div
+      className="absolute h-1 w-1 rounded-full bg-emerald-400/60"
+      initial={{
+        x,
+        y,
+        opacity: 0,
+      }}
+      animate={{
+        y: [y, y - 20, y],
+        opacity: [0, 1, 0],
+      }}
+      transition={{
+        duration: 3,
+        delay,
+        repeat: Infinity,
+        repeatDelay,
+      }}
+    />
+  );
+};
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("playground");
@@ -1014,7 +1025,7 @@ export default function Home() {
         throw new Error(result.error || "Analysis failed");
       }
 
-      setAnalysisResult(result);
+      setAnalysisResult(result as AnalysisResult);
     } catch (err) {
       setAnalysisError(
         err instanceof Error ? err.message : "Failed to analyze repository",
@@ -1229,7 +1240,7 @@ export default function Home() {
           transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
         />
         {[...Array(20)].map((_, i) => (
-          <FloatingParticle key={i} delay={i * 0.5} />
+          <FloatingParticle key={i} delay={i * 0.5} seed={i} />
         ))}
       </div>
 
@@ -1372,7 +1383,7 @@ export default function Home() {
                         </Tabs>
                       </div>
                     </CardHeader>
-                    <CardContent className="pt-4">
+                    <CardContent className="pt-4 space-y-4">
                       <Tabs value={inputMethod} className="w-full">
                         <TabsContent value="json" className="mt-0">
                           <div className="space-y-4">
@@ -1546,6 +1557,30 @@ export default function Home() {
                           </div>
                         </TabsContent>
                       </Tabs>
+
+                      <motion.div
+                        className="flex justify-end"
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        <Button
+                          onClick={executeOperation}
+                          disabled={isLoading}
+                          className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/30"
+                        >
+                          {isLoading ? (
+                            <>
+                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                              Processing...
+                            </>
+                          ) : (
+                            <>
+                              <Play className="mr-2 h-4 w-4" />
+                              Execute
+                            </>
+                          )}
+                        </Button>
+                      </motion.div>
                     </CardContent>
                   </Card>
                 </motion.div>
