@@ -58,6 +58,7 @@ import {
   ShieldCheck,
   Lock,
 } from "lucide-react";
+import dynamic from "next/dynamic";
 import { Progress } from "@/components/ui/progress";
 
 type Operation =
@@ -717,7 +718,7 @@ const DataPacket = ({
 }) => (
   <motion.div
     className="absolute h-2 w-2 rounded-full bg-emerald-400 shadow-lg shadow-emerald-400/50"
-    initial={{ left: "0%", opacity: 0 }}
+    initial={{ left: "0%", opacity: "0" }}
     animate={{
       left: ["0%", "100%"],
       opacity: [0, 1, 1, 0],
@@ -758,32 +759,55 @@ const seededRandom = (seed: number) => {
   return value - Math.floor(value);
 };
 
-const FloatingParticle = ({ delay, seed }: { delay: number; seed: number }) => {
-  const x = seededRandom(seed + 1) * 100;
-  const y = seededRandom(seed + 2) * 100;
-  const repeatDelay = seededRandom(seed + 3) * 2;
+const FloatingParticle = dynamic(
+  () => import("./FloatingParticles.client").then((m) => m.FloatingParticle),
+  { ssr: false },
+);
 
-  return (
-    <motion.div
-      className="absolute h-1 w-1 rounded-full bg-emerald-400/60"
-      initial={{
-        x,
-        y,
-        opacity: 0,
-      }}
-      animate={{
-        y: [y, y - 20, y],
-        opacity: [0, 1, 0],
-      }}
-      transition={{
-        duration: 3,
-        delay,
-        repeat: Infinity,
-        repeatDelay,
-      }}
-    />
-  );
-};
+{
+  Array.from({ length: 20 }).map((_, i) => (
+    <FloatingParticle key={i} delay={i * 0.5} seed={i} />
+  ));
+}
+
+// const FloatingParticle = ({ delay, seed }: { delay: number; seed: number }) => {
+//   const [mounted, setMounted] = useState(false);
+//   const [pos, setPos] = useState<{
+//     x: number;
+//     y: number;
+//     repeatDelay: number;
+//   } | null>(null);
+
+//   useEffect(() => {
+//     setMounted(true);
+
+//     const x = seededRandom(seed + 1) * 100;
+//     const y = seededRandom(seed + 2) * 100;
+//     const repeatDelay = seededRandom(seed + 3) * 2;
+
+//     setPos({ x, y, repeatDelay });
+//   }, [seed]);
+
+//   if (!mounted || !pos) return null;
+
+//   return (
+//     <motion.div
+//       className="absolute h-1 w-1 rounded-full bg-emerald-400/60"
+//       initial={{ opacity: 0 }}
+//       animate={{
+//         x: pos.x,
+//         y: [pos.y, pos.y - 20, pos.y],
+//         opacity: [0, 1, 0],
+//       }}
+//       transition={{
+//         duration: 3,
+//         delay,
+//         repeat: Infinity,
+//         repeatDelay: pos.repeatDelay,
+//       }}
+//     />
+//   );
+// };
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("playground");
@@ -1206,10 +1230,12 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-[#0a0e14] text-slate-100 overflow-hidden">
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgxMDAsMjAwLDI1NSwwLjAzKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-50" />
+      <div
+        className="fixed inset-0 overflow-hidden pointer-events-none"
+        suppressHydrationWarning
+      >
         <motion.div
-          className="absolute -top-40 -right-40 h-[500px] w-[500px] rounded-full bg-emerald-500/10 blur-[100px]"
+          className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiI/10 blur-[100px]"
           animate={{
             scale: [1, 1.3, 1],
             opacity: [0.2, 0.4, 0.2],
@@ -1218,7 +1244,7 @@ export default function Home() {
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
         />
         <motion.div
-          className="absolute -bottom-40 -left-40 h-[500px] w-[500px] rounded-full bg-teal-500/10 blur-[100px]"
+          className="absolute -top-40 -right-40 h-[500px] w-[500px] rounded-full bg-emerald-500/10 blur-[100px]"
           animate={{
             scale: [1.3, 1, 1.3],
             opacity: [0.2, 0.4, 0.2],
@@ -1232,7 +1258,7 @@ export default function Home() {
           }}
         />
         <motion.div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] rounded-full bg-cyan-500/5 blur-[120px]"
+          className="absolute -bottom-40 -left-40 h-[500px] w-[500px] rounded-full bg-teal-500/10 blur-[100px]"
           animate={{
             scale: [1, 1.2, 1],
             rotate: [0, 180, 360],
@@ -1245,6 +1271,32 @@ export default function Home() {
       </div>
 
       <div className="relative">
+        {activeTab === "playground" && (
+          <motion.div
+            className="fixed bottom-6 right-6 z-50"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Button
+              onClick={executeOperation}
+              disabled={isLoading}
+              size="lg"
+              className="bg-gradient-to-r from-emerald-500 to-teal-600 px-6 text-white shadow-lg shadow-emerald-500/30"
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  Processing...
+                </>
+              ) : (
+                <>
+                  <Play className="mr-2 h-5 w-5" />
+                  Execute
+                </>
+              )}
+            </Button>
+          </motion.div>
+        )}
         <motion.header
           className="border-b border-emerald-500/20 bg-[#0d1117]/80 backdrop-blur-xl sticky top-0 z-50"
           initial={{ y: -100 }}
@@ -1361,8 +1413,8 @@ export default function Home() {
                         </CardTitle>
                         <Tabs
                           value={inputMethod}
-                          onValueChange={(value: "json" | "ui") =>
-                            setInputMethod(value)
+                          onValueChange={(value) =>
+                            setInputMethod(value as "json" | "ui")
                           }
                           className="w-auto"
                         >
@@ -2768,9 +2820,9 @@ export default function Home() {
                               <h4 className="text-sm font-medium text-slate-300 mb-2">
                                 Explanation
                               </h4>
-                              <p className="text-sm text-slate-400 leading-relaxed">
+                              <div className="text-sm text-slate-400 leading-relaxed">
                                 {selectedLesson.explanation}
-                              </p>
+                              </div>
                             </motion.div>
 
                             <motion.div
