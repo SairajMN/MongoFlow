@@ -497,7 +497,11 @@ db.users.deleteMany({ "age": { "$lt": 18 } })`}</code>
     operation: "aggregate",
     sampleData: [
       {
-        $group: { _id: "$role", count: { $sum: 1 }, avgAge: { $avg: "$age" } },
+        $group: {
+          _id: "$role",
+          count: { $sum: 1 },
+          avgAge: { $avg: "$age" },
+        },
       },
     ],
     expectedResult:
@@ -559,14 +563,14 @@ db.users.deleteMany({ "age": { "$lt": 18 } })`}</code>
       "Documents will be reshaped with uppercase names, emails, and a computed ageGroup field.",
     tips: [
       "_id is included by default - use _id: 0 to exclude",
-      "Use $concat to combine strings: { $concat: ['$firstName', ' ', '$lastName'] }",
+      "Use $concat to combine strings",
       "$cond provides if-then-else logic",
     ],
-    nextLesson: "aggregate-lookup",
+    nextLesson: "aggregate-unwind",
   },
   {
-    id: "aggregate-lookup",
-    title: "Aggregation: $unwind",
+    id: "aggregate-unwind",
+    title: "Aggregation: $unwind Stage",
     category: "advanced",
     objective: "Learn to deconstruct arrays with $unwind",
     explanation:
@@ -581,13 +585,134 @@ db.users.deleteMany({ "age": { "$lt": 18 } })`}</code>
       { $limit: 5 },
     ],
     expectedResult:
-      "This complex pipeline splits names into letters, unwinds them, and counts letter frequency - showing the most common letters.",
+      "Names are split into letters, unwound, grouped, and counted to show the most common letters.",
     tips: [
       "$unwind creates one document per array element",
-      "Use preserveNullAndEmptyArrays: true to keep documents with empty arrays",
-      "Great for analyzing nested data structures",
+      "Use preserveNullAndEmptyArrays: true to keep empty arrays",
+      "Ideal for analyzing nested or array data",
     ],
   },
+
+  // },
+  // {
+  //   id: "aggregate-match",
+  //   title: "Aggregation: $match Stage",
+  //   category: "intermediate",
+  //   objective: "Learn the aggregation pipeline and $match stage",
+  //   explanation:
+  //     "The aggregation pipeline processes documents through multiple stages. $match filters documents (similar to find). Place $match early in the pipeline to reduce the number of documents processed by later stages.",
+  //   operation: "aggregate",
+  //   sampleData: [{ $match: { age: { $gte: 25 } } }],
+  //   expectedResult:
+  //     "Documents passing the $match condition will be returned. This is similar to find() but can be combined with other stages.",
+  //   tips: [
+  //     "$match uses the same query syntax as find()",
+  //     "Place $match early to reduce documents in the pipeline",
+  //     "$match can use indexes, improving performance",
+  //   ],
+  //   nextLesson: "aggregate-group",
+  // },
+  // {
+  //   id: "aggregate-group",
+  //   title: "Aggregation: $group Stage",
+  //   category: "intermediate",
+  //   objective: "Learn to group and aggregate data",
+  //   explanation:
+  //     "$group combines documents by a specified _id field and calculates aggregate values. Use accumulator operators like $sum, $avg, $min, $max, $push, $first, $last to compute values across grouped documents.",
+  //   operation: "aggregate",
+  //   sampleData: [
+  //     {
+  //       $group: { _id: "$role", count: { $sum: 1 }, avgAge: { $avg: "$age" } },
+  //     },
+  //   ],
+  //   expectedResult:
+  //     "Documents will be grouped by the 'role' field. Each group shows the count and average age.",
+  //   tips: [
+  //     "_id: null groups all documents together",
+  //     "Use $sum: 1 to count documents in each group",
+  //     "Field references start with $ (e.g., '$fieldName')",
+  //   ],
+  //   nextLesson: "aggregate-sort",
+  // },
+  // {
+  //   id: "aggregate-sort",
+  //   title: "Aggregation: $sort & $limit",
+  //   category: "intermediate",
+  //   objective: "Learn to sort and limit aggregation results",
+  //   explanation:
+  //     "$sort orders documents by specified fields (1 for ascending, -1 for descending). $limit restricts the number of results. $skip can be used for pagination. These stages are commonly used together.",
+  //   operation: "aggregate",
+  //   sampleData: [
+  //     { $match: { age: { $exists: true } } },
+  //     { $sort: { age: -1 } },
+  //     { $limit: 3 },
+  //   ],
+  //   expectedResult:
+  //     "The top 3 oldest people will be returned, sorted by age in descending order.",
+  //   tips: [
+  //     "Sort before $limit to get 'top N' results",
+  //     "Sorting large datasets without an index is slow",
+  //     "Use { $skip: N } for pagination",
+  //   ],
+  //   nextLesson: "aggregate-project",
+  // },
+  // {
+  //   id: "aggregate-project",
+  //   title: "Aggregation: $project Stage",
+  //   category: "intermediate",
+  //   objective: "Learn to reshape documents with $project",
+  //   explanation:
+  //     "$project specifies which fields to include, exclude, or compute. Use 1 to include, 0 to exclude, or expressions to compute new fields. This is useful for data transformation and reducing response size.",
+  //   operation: "aggregate",
+  //   sampleData: [
+  //     {
+  //       $project: {
+  //         _id: 0,
+  //         fullName: { $toUpper: "$name" },
+  //         email: 1,
+  //         ageGroup: {
+  //           $cond: {
+  //             if: { $gte: ["$age", 30] },
+  //             then: "senior",
+  //             else: "junior",
+  //           },
+  //         },
+  //       },
+  //     },
+  //   ],
+  //   expectedResult:
+  //     "Documents will be reshaped with uppercase names, emails, and a computed ageGroup field.",
+  //   tips: [
+  //     "_id is included by default - use _id: 0 to exclude",
+  //     "Use $concat to combine strings: { $concat: ['$firstName', ' ', '$lastName'] }",
+  //     "$cond provides if-then-else logic",
+  //   ],
+  //   nextLesson: "aggregate-lookup",
+  // },
+  // {
+  //   id: "aggregate-lookup",
+  //   title: "Aggregation: $unwind",
+  //   category: "advanced",
+  //   objective: "Learn to deconstruct arrays with $unwind",
+  //   explanation:
+  //     "$unwind deconstructs an array field, outputting one document for each element. This is useful for array analysis, normalization, or preparing data for $group operations on array elements.",
+  //   operation: "aggregate",
+  //   sampleData: [
+  //     { $match: { name: { $exists: true } } },
+  //     { $project: { name: 1, letters: { $split: ["$name", ""] } } },
+  //     { $unwind: "$letters" },
+  //     { $group: { _id: "$letters", count: { $sum: 1 } } },
+  //     { $sort: { count: -1 } },
+  //     { $limit: 5 },
+  //   ],
+  //   expectedResult:
+  //     "This complex pipeline splits names into letters, unwinds them, and counts letter frequency - showing the most common letters.",
+  //   tips: [
+  //     "$unwind creates one document per array element",
+  //     "Use preserveNullAndEmptyArrays: true to keep documents with empty arrays",
+  //     "Great for analyzing nested data structures",
+  //   ],
+  // },
 ];
 
 const SAMPLE_DATA = {
