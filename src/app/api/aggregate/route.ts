@@ -5,7 +5,7 @@ export async function POST(request: NextRequest) {
   const startTime = Date.now();
 
   try {
-    let body: any;
+    let body;
 
     try {
       body = await request.json();
@@ -24,15 +24,23 @@ export async function POST(request: NextRequest) {
     }
 
     const { db } = await connectToDatabase();
-    const collection = db.collection(getCollectionName());
+    const collectionName = getCollectionName();
 
-    // Run aggregation
-    const results = await collection.aggregate(body).toArray();
-
-    // Run explain separately (safer)
-    const explainResult = await collection
+    // 1️⃣ Run aggregation ONCE
+    const results = await db
+      .collection(collectionName)
       .aggregate(body)
-      .explain("executionStats");
+      .toArray();
+
+    // 2️⃣ Run explain safely using db.command
+    const explainResult = await db.command({
+      explain: {
+        aggregate: collectionName,
+        pipeline: body,
+        cursor: {},
+      },
+      verbosity: "executionStats",
+    });
 
     const executionTime = Date.now() - startTime;
 
@@ -56,13 +64,11 @@ export async function POST(request: NextRequest) {
       explain: explainResult,
     });
   } catch (error) {
-    const executionTime = Date.now() - startTime;
-
     return NextResponse.json(
       {
         success: false,
         error: error instanceof Error ? error.message : "Unknown error",
-        metrics: { executionTime },
+        metrics: { executionTime: Date.now() - startTime },
       },
       { status: 500 },
     );
