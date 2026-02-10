@@ -1,7 +1,7 @@
-import { MongoClient, Db } from 'mongodb';
+import { MongoClient, Db } from "mongodb";
 
-const MONGODB_URI = process.env.MONGODB_URI || '';
-const DB_NAME = process.env.DB_NAME || 'mongoflow_demo';
+const MONGODB_URI = process.env.MONGODB_URI || "";
+const DB_NAME = process.env.DB_NAME || "mongoflow_demo";
 
 interface CachedConnection {
   client: MongoClient | null;
@@ -24,9 +24,12 @@ if (!global.mongoCache) {
   global.mongoCache = cached;
 }
 
-export async function connectToDatabase(): Promise<{ client: MongoClient; db: Db }> {
+export async function connectToDatabase(): Promise<{
+  client: MongoClient;
+  db: Db;
+}> {
   if (!MONGODB_URI) {
-    throw new Error('MONGODB_URI environment variable is not defined');
+    throw new Error("MONGODB_URI environment variable is not defined");
   }
 
   if (cached.client && cached.db) {
@@ -34,7 +37,17 @@ export async function connectToDatabase(): Promise<{ client: MongoClient; db: Db
   }
 
   if (!cached.promise) {
-    cached.promise = MongoClient.connect(MONGODB_URI).then((client) => {
+    cached.promise = MongoClient.connect(MONGODB_URI, {
+      // SSL/TLS settings for MongoDB Atlas
+      tls: true,
+      tlsAllowInvalidCertificates: false,
+      retryWrites: true,
+      w: "majority",
+      // Additional connection options
+      maxPoolSize: 10,
+      serverSelectionTimeoutMS: 30000,
+      socketTimeoutMS: 45000,
+    }).then((client) => {
       const db = client.db(DB_NAME);
       return { client, db };
     });
@@ -48,5 +61,5 @@ export async function connectToDatabase(): Promise<{ client: MongoClient; db: Db
 }
 
 export function getCollectionName(): string {
-  return 'demo_collection';
+  return "demo_collection";
 }
